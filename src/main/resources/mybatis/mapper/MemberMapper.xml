@@ -29,6 +29,7 @@
           , MEMBER_NAME
           , EMAIL
           , PHONE
+          , MEMBER_ROLE
         )
         VALUES
         (
@@ -38,6 +39,7 @@
           , #{memberName}
           , #{email}
           , #{phone}
+          , #{memberRole}
         )
     </insert>
 
@@ -49,6 +51,7 @@
              , MEMBER_NAME
              , EMAIL
              , PHONE
+             , MEMBER_ROLE
         FROM TB_MEMBER
         WHERE MEMBER_ID = #{memberId}
 
@@ -62,6 +65,7 @@
              , MEMBER_NAME
              , EMAIL
              , PHONE
+             , MEMBER_ROLE
         FROM TB_MEMBER
         WHERE EMAIL = #{email}
     </select>
