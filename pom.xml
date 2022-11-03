@@ -15,6 +15,14 @@
     <description>fairy-taler</description>
     <properties>
         <java.version>11</java.version>
+        <!-- 프로젝트 코드 인코딩 설정 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- JPA, 하이버네이트 버전 -->
+        <hibernate.version>4.3.10.Final</hibernate.version>
+        <!-- 데이터베이스 버전 -->
+        <h2db.version>1.4.187</h2db.version>
     </properties>
     <dependencies>
         <dependency>
@@ -125,6 +133,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <!-- JPA, 하이버네이트 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
