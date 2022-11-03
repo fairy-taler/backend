@@ -1,5 +1,4 @@
-package com.fairytaler.fairytalecat.community.entity;
-
+package com.fairytaler.fairytalecat.community.command.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
