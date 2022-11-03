@@ -52,6 +52,7 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
+
         return new TokenDTO(BEARER_TYPE, member.getMemberName(), accessToken, accessTokenExpiresIn.getTime());
      }
 
@@ -80,7 +81,8 @@ public class TokenProvider {
                          .collect(Collectors.toList());
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     public boolean validateToken(String token) throws TokenException {
