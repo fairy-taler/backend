@@ -16,17 +16,19 @@ public class MemberDTO implements UserDetails {
     private String memberName;
     private String email;
     private String phone;
+    private  String nickname;
     private String memberRole;
 
     public MemberDTO () {}
 
-    public MemberDTO(Long memberCode, String memberId, String memberPwd, String memberName, String email, String phone, String memberRole) {
+    public MemberDTO(Long memberCode, String memberId, String memberPwd, String memberName, String email, String phone, String nickname, String memberRole) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPwd = memberPwd;
         this.memberName = memberName;
         this.email = email;
         this.phone = phone;
+        this.nickname = nickname;
         this.memberRole = memberRole;
     }
 
@@ -76,6 +78,14 @@ public class MemberDTO implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getMemberRole() {
@@ -134,8 +144,9 @@ public class MemberDTO implements UserDetails {
                 ", memberName='" + memberName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", memberRole='" + memberRole + '\'' +
+                ", authorities=" + authorities +
                 '}';
     }
-
 }
