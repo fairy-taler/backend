@@ -20,4 +20,57 @@
     </select>
 
 
+    <insert id="insertMember" parameterType="MemberDTO">
+        INSERT INTO TB_MEMBER
+        (
+            MEMBER_CODE
+          , MEMBER_ID
+          , MEMBER_PWD
+          , MEMBER_NAME
+          , EMAIL
+          , PHONE
+          , NICKNAME
+          , MEMBER_ROLE
+        )
+        VALUES
+        (
+            SEQ_TB_MEMBER_CODE.NEXTVAL
+          , #{memberId}
+          , #{memberPwd}
+          , #{memberName}
+          , #{email}
+          , #{phone}
+          , #{nickname}
+          , #{memberRole}
+        )
+    </insert>
+
+        <select id="findById" resultType="MemberDTO">
+        SELECT
+               MEMBER_CODE
+             , EMAIL
+             , MEMBER_PWD
+             , MEMBER_NAME
+             , EMAIL
+             , PHONE
+             , MEMBER_ROLE
+        FROM TB_MEMBER
+        WHERE MEMBER_ID = #{memberId}
+
+    </select>
+
+    <select id="findByEmail" resultType="MemberDTO">
+        SELECT
+               MEMBER_CODE
+             , MEMBER_ID
+             , MEMBER_PWD
+             , MEMBER_NAME
+             , EMAIL
+             , PHONE
+             , MEMBER_ROLE
+        FROM TB_MEMBER
+        WHERE EMAIL = #{email}
+    </select>
+
+
 </mapper>

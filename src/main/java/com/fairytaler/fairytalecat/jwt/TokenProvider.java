@@ -42,7 +42,7 @@ public class TokenProvider {
                 .setSubject(member.getMemberId());
 
         claims.put(AUTHORITIES_KEY, roles);
-
+        
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
@@ -72,6 +72,7 @@ public class TokenProvider {
         if(claims.get(AUTHORITIES_KEY) == null){
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
+         System.out.println("claims.get(AUTHORITIES_KEY) = " + claims.get(AUTHORITIES_KEY));
 
          Collection<? extends GrantedAuthority> authorities =
                  Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
