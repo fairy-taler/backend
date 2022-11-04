@@ -7,7 +7,7 @@ import java.util.List;
 public class TaleRequestDTO {
     private String title;
     private String createAt;
-    private List<TalePage> pages ;
+    private List<TalePage> pages;
 
     public TaleRequestDTO() {}
 

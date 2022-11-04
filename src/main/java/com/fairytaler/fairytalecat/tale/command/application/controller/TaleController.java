@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/tale") // 데이터 리턴 서버
+@RestController
+@RequestMapping("/tale") // 데이터 리턴 서버
 public class TaleController {
     // DI
     private final TaleRepository taleRepository;
@@ -20,7 +21,7 @@ public class TaleController {
         this.insertTaleService = insertTaleService;
     }
 
-    @PostMapping("/insertTale")
+    @PostMapping("/insert-tale")
     public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
 
