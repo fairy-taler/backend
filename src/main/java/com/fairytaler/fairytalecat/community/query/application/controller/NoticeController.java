@@ -15,14 +15,21 @@ public class NoticeController {
     public NoticeController(NoticeQueryService noticeService){
         this.noticeService = noticeService;
     }
+
+    /* 공지사항 조회 */
     @GetMapping("/notices/{noticeCode}")
-    public ResponseEntity<ResponseDTO> selectNotice(@PathVariable int noticeCode){
+    public ResponseEntity<ResponseDTO> selectNotice(@PathVariable Long noticeCode){
+        /* role 확인 후, 관리자면 전체 조회, 일반 유저면 public 데이터만 조회*/
+
         /* 공지사항이 있으면 조회 후 반환 */
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공",noticeService.getNotice(noticeCode)));
+    }
 
-        System.out.println(noticeService.getNotice(Long.valueOf(noticeCode)));
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공", noticeService.selectNotice(noticeCode)));
+    @GetMapping("/notices")
+    public ResponseEntity<ResponseDTO> insertNotice(@PathVariable Long noticeCode){
+        /* role 확인 후, 관리자면 전체 조회, 일반 유저면 public 데이터만 조회*/
 
-        /* 공지사항이 없으면 공지사항이 없습니다. 반환 */
-
+        /* 공지사항이 있으면 조회 후 반환 */
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공",noticeService.getNotice(noticeCode)));
     }
 }
