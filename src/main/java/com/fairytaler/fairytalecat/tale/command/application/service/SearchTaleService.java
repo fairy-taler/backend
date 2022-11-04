@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.tale.command.application.service;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.tale.domain.model.Tale;
+import com.fairytaler.fairytalecat.tale.domain.repository.TaleListRepository;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,11 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class SearchTaleService {
 
+    private TokenProvider tokenProvider;
     private TaleRepository taleRepository;
+    private TaleListRepository taleListRepository;
 
-    public SearchTaleService ( TaleRepository taleRepository) {
+    public SearchTaleService (TokenProvider tokenProvider, TaleRepository taleRepository, TaleListRepository taleListRepository) {
+        this.tokenProvider = tokenProvider;
         this.taleRepository = taleRepository;
+        this.taleListRepository = taleListRepository;
     }
+
     public Object searchTaleByTaleCode(String id) {
 
         try {
@@ -30,5 +36,22 @@ public class SearchTaleService {
             return "ERROR";
         }
 
+    }
+
+    public Object searchTaleByMemberId(String accessToken) {
+
+        String memberCode = tokenProvider.getUserCode(accessToken);
+
+        try {
+            if (taleListRepository.findByMemberCode(memberCode) == null) {
+                return "동화가 존재하지 않습니다!";
+            } else {
+                System.out.println("taleRepository.findByMemberCode(id); = " + taleListRepository.findByMemberCode(memberCode));
+                return taleListRepository.findByMemberCode(memberCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
+        }
     }
 }
