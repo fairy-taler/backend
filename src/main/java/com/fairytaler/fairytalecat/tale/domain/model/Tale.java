@@ -14,7 +14,7 @@ import java.util.List;
 public class Tale {
 
     @Id
-    private String id;
+    private String taleCode;
 
     private String title;
     private String createAt;
