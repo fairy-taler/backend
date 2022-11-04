@@ -21,14 +21,17 @@ public class InsertAvatarService {
     }
 
     @Transactional
-    public Long InsertAvatar(String accessToken, Long avatarCode){
-        System.out.println("avatarCode = " + avatarCode);
+    public Long InsertAvatar(String accessToken, AvatarRequestDTO avatarRequestDTO){
+
         String memberCode = tokenProvider.getUserCode(accessToken);
-        System.out.println("memberCode = " + memberCode);
-        Avatar avatar = new Avatar(Long.parseLong(memberCode), avatarCode);
+        Avatar avatar = new Avatar();
+        avatar.setMemberCode(Long.parseLong(memberCode));
+        avatar.setAnimal(avatarRequestDTO.getAnimal());
+        avatar.setMaterial(avatarRequestDTO.getMaterial());
+        avatar.setObjectName(avatarRequestDTO.getObjectName());
         avatarRepository.save(avatar);
 
-        return avatar.getAvatarCode();
+        return avatar.getMemberCode();
     }
 
 
