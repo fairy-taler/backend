@@ -22,7 +22,7 @@ public class AvatarController {
         this.insertAvatarService= insertAvatarService;
     }
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> insertAvatar(@RequestBody AvatarRequestDTO avatarCode, @RequestHeader String accessToken)  {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "아바타 등록 성공", insertAvatarService.InsertAvatar(accessToken, avatarCode.getAvatarCode())));
+    public ResponseEntity<ResponseDTO> insertAvatar(@RequestBody AvatarRequestDTO avatarRequestDTO, @RequestHeader String accessToken)  {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "아바타 등록 성공", insertAvatarService.InsertAvatar(accessToken, avatarRequestDTO)));
     }
 }
