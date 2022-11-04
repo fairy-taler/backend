@@ -39,7 +39,8 @@ public class TokenProvider {
 
         Claims claims = Jwts
                 .claims()
-                .setSubject(member.getMemberId());
+                .setSubject(member.getMemberId())
+                .setId(member.getMemberCode().toString());
 
         claims.put(AUTHORITIES_KEY, roles);
         
@@ -52,6 +53,7 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
+
         return new TokenDTO(BEARER_TYPE, member.getMemberName(), accessToken, accessTokenExpiresIn.getTime());
      }
 
@@ -63,6 +65,16 @@ public class TokenProvider {
                 .parseClaimsJws(accessToken)
                 .getBody()
                 .getSubject();
+     }
+
+     public String getUserCode(String accessToken){
+         return Jwts
+                 .parserBuilder()
+                 .setSigningKey(key)
+                 .build()
+                 .parseClaimsJws(accessToken)
+                 .getBody()
+                 .getId();
      }
 
      public Authentication getAuthentication(String accessToken){
@@ -80,7 +92,8 @@ public class TokenProvider {
                          .collect(Collectors.toList());
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     public boolean validateToken(String token) throws TokenException {

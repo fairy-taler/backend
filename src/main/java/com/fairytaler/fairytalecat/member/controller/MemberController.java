@@ -23,4 +23,9 @@ public class MemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberService.findMemberById(accessToken)));
     }
 
+    @GetMapping("/optional-info")
+    public ResponseEntity<ResponseDTO> findOptionalInfo(@RequestHeader String accessToken){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberService.findOptionalInfo(accessToken)));
+    }
+
 }
