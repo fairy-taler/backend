@@ -25,4 +25,9 @@ public class MemberService {
         return member;
     }
 
+    public MemberDTO findOptionalInfo(String accessToken) {
+        String memberId = tokenProvider.getUserId(accessToken);
+        MemberDTO member = memberMapper.findOptionalInfo(memberId);
+        return member;
+    }
 }

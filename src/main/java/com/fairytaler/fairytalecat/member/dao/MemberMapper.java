@@ -16,4 +16,6 @@ public interface MemberMapper {
     public MemberDTO findByEmail(String email);
 
     public int insertMember(MemberDTO memberDTO);
+
+    MemberDTO findOptionalInfo(String memberId);
 }
