@@ -14,11 +14,22 @@ import java.util.List;
 public class Tale {
 
     @Id
-    private String taleCode;
+    private String id;              // 고유 번호
+    private String memberCode;      // 작성자 코드
+    private String title;           // 제목
+    private String createAt;        // 생성 날짜
+    private List<TalePage> pages;   // 페이지
 
-    private String title;
-    private String createAt;
-    private List<TalePage> pages;
+    @Override
+    public String toString() {
+        return "Tale{" +
+                "id='" + id + '\'' +
+                ", memberCode='" + memberCode + '\'' +
+                ", title='" + title + '\'' +
+                ", createAt='" + createAt + '\'' +
+                ", pages=" + pages +
+                '}';
+    }
 }
 
 

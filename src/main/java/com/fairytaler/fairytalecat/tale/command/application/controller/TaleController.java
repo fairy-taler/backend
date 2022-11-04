@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.tale.command.application.controller;
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.tale.command.application.service.InsertTaleService;
 import com.fairytaler.fairytalecat.tale.command.application.service.SearchTaleService;
+import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class TaleController {
         this.searchTaleService = searchTaleService;
     }
 
-    @PostMapping("/insertTale")
+    @PostMapping("/insert-tale")
     public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
 
@@ -32,7 +33,16 @@ public class TaleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTale(id)));
+        Tale tale = (Tale) searchTaleService.searchTale(id);
+        System.out.println(tale);
+
+        TaleRequestDTO taleRequestDTO = new TaleRequestDTO();
+
+        taleRequestDTO.setCreateAt(tale.getCreateAt());
+        taleRequestDTO.setTitle(tale.getTitle());
+        taleRequestDTO.setPages(tale.getPages());
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", taleRequestDTO));
     }
 
 }
