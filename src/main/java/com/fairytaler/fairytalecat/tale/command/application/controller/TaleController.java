@@ -33,7 +33,7 @@ public class TaleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTale(id)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByTaleCode(id)));
     }
 
 }

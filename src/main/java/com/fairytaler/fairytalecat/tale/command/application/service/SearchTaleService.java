@@ -16,14 +16,14 @@ public class SearchTaleService {
     public SearchTaleService ( TaleRepository taleRepository) {
         this.taleRepository = taleRepository;
     }
-    public Object searchTale(String id) {
+    public Object searchTaleByTaleCode(String id) {
 
         try {
-            if (taleRepository.findByMemberCode(id) == null) {
+            if (taleRepository.findById(id) == null) {
                 return "동화가 존재하지 않습니다!";
             } else {
-                System.out.println("taleRepository.findByMemberCode(id); = " + taleRepository.findByMemberCode(id));
-                return taleRepository.findByMemberCode(id);
+                System.out.println("taleRepository.findByMemberCode(id); = " + taleRepository.findById(id));
+                return taleRepository.findById(id);
             }
         } catch (Exception e) {
             e.printStackTrace();
