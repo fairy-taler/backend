@@ -11,4 +11,12 @@ public class TalePage {
         this.page = page;
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "TalePage{" +
+                "page='" + page + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
