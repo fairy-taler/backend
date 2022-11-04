@@ -39,7 +39,8 @@ public class TokenProvider {
 
         Claims claims = Jwts
                 .claims()
-                .setSubject(member.getMemberId());
+                .setSubject(member.getMemberId())
+                .setId(member.getMemberCode().toString());
 
         claims.put(AUTHORITIES_KEY, roles);
         
@@ -64,6 +65,16 @@ public class TokenProvider {
                 .parseClaimsJws(accessToken)
                 .getBody()
                 .getSubject();
+     }
+
+     public String getUserCode(String accessToken){
+         return Jwts
+                 .parserBuilder()
+                 .setSigningKey(key)
+                 .build()
+                 .parseClaimsJws(accessToken)
+                 .getBody()
+                 .getId();
      }
 
      public Authentication getAuthentication(String accessToken){
