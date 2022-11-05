@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface NoticeDAO extends JpaRepository<Notice, Long> {
+public interface NoticeQueryDAO extends JpaRepository<Notice, Long> {
     Optional<Notice> findByNoticeCode(Long noticeCode);
     Page<Notice> findAll(Pageable pageable);
 }

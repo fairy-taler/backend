@@ -1,15 +1,31 @@
 package com.fairytaler.fairytalecat.community.command.application.dto;
 
 public class NoticeRequestDTO {
-
+    private Long noticeCode;
     private String title;
-
     private String content;
 
-
-    public NoticeRequestDTO(String title, String content) {
+    public NoticeRequestDTO(Long noticeCode, String title, String content) {
+        this.noticeCode = noticeCode;
         this.title = title;
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "NoticeRequestDTO{" +
+                "noticeCode=" + noticeCode +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
+
+    public Long getNoticeCode() {
+        return noticeCode;
+    }
+
+    public void setNoticeCode(Long noticeCode) {
+        this.noticeCode = noticeCode;
     }
 
     public void setTitle(String title) {
@@ -29,11 +45,4 @@ public class NoticeRequestDTO {
         return content;
     }
 
-    @Override
-    public String toString() {
-        return "NoticeRequestDTO{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }
