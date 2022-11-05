@@ -1,7 +1,10 @@
 package com.fairytaler.fairytalecat.tale.domain.model;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class TalePage {
 
     private String page;
