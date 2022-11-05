@@ -2,16 +2,16 @@ package com.fairytaler.fairytalecat.community.query.application.dto;
 
 import java.util.Date;
 
-public class NoticeDTO {
+public class NoticeResponseDTO {
     private int noticeCode;
     private String title;
     private String content;
     private String isPublic;
     private Date craeteDate;
 
-    public NoticeDTO(){}
+    public NoticeResponseDTO(){}
 
-    public NoticeDTO(int noticeCode, String title, String content, String isPublic, Date craeteDate) {
+    public NoticeResponseDTO(int noticeCode, String title, String content, String isPublic, Date craeteDate) {
         this.noticeCode = noticeCode;
         this.title = title;
         this.content = content;
