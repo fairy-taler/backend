@@ -53,7 +53,6 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-
         return new TokenDTO(BEARER_TYPE, member.getMemberName(), accessToken, accessTokenExpiresIn.getTime());
      }
 
@@ -91,7 +90,6 @@ public class TokenProvider {
                          .map(SimpleGrantedAuthority::new)
                          .collect(Collectors.toList());
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
-
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }

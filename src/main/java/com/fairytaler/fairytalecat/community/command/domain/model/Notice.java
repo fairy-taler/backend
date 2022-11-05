@@ -1,15 +1,22 @@
 package com.fairytaler.fairytalecat.community.command.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@SequenceGenerator(
+        name = "SEQ_NOTICE_CODE"
+        , sequenceName = "SEQ_NOTICE_CODE"
+        , initialValue = 1
+        , allocationSize = 1
+)
 @Table(name = "TB_NOTICE")
 public class Notice {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE
+            , generator = "SEQ_NOTICE_CODE"
+    )
     @Column(name="NOTICE_CODE")
     private long noticeCode;           //내용
     @Column(name="TITLE")
