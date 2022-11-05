@@ -41,7 +41,6 @@ public class InsertTaleService {
         tale.setMemberCode(memberCode);
         System.out.println("[insertTaleService : Tale entity] \n" + tale);
 
-
         /* 테일 */
 //        if (mongoDBTestRepository.findByName(name) != null) {
 //            log.info("[Service][update] name is already exist!!");
