@@ -8,21 +8,24 @@ import org.springframework.stereotype.Service;
 @Setter
 public class FaqRequestDTO {
 
+    private Long faqCode;
     private String title;
     private String content;
     private String answer;
 
-    public FaqRequestDTO(String title, String conntet, String answer) {
+    public FaqRequestDTO(Long faqCode, String title, String content, String answer) {
+        this.faqCode = faqCode;
         this.title = title;
-        this.content = conntet;
+        this.content = content;
         this.answer = answer;
     }
 
     @Override
     public String toString() {
         return "FaqRequestDTO{" +
-                "title='" + title + '\'' +
-                ", conntet='" + content + '\'' +
+                "faqCode=" + faqCode +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", answer='" + answer + '\'' +
                 '}';
     }
