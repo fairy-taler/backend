@@ -1,8 +1,8 @@
 package com.fairytaler.fairytalecat.jwt;
 
 import com.fairytaler.fairytalecat.exception.TokenException;
-import com.fairytaler.fairytalecat.member.dto.MemberDTO;
-import com.fairytaler.fairytalecat.member.dto.TokenDTO;
+import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.command.application.dto.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
