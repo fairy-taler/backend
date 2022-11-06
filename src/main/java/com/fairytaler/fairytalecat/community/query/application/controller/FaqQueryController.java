@@ -34,6 +34,7 @@ public class FaqQueryController {
 
     /* 전체 조회 */
     @GetMapping("/faq")
+
     public ResponseEntity<ResponseDTO> selectFaqListWithPaging(Pageable pageable){
         /* role 확인 후, 관리자면 전체 조회, 일반 유저면 public 데이터만 조회*/
 
