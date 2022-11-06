@@ -16,16 +16,16 @@ import java.util.Optional;
 @RestController
 public class FaqQueryController {
 
-    private static FaqQueryService faqService;
+    private static FaqQueryService faqQueryService;
 
-    public FaqQueryController(FaqQueryService faqService){
-        this.faqService = faqService;
+    public FaqQueryController(FaqQueryService faqQueryService){
+        this.faqQueryService = faqQueryService;
     }
 
     /* 상세 조회 */
     @GetMapping("/faq/{faqCode}")
     public ResponseEntity<ResponseDTO> selectFaq(@PathVariable Long faqCode){
-        Faq faq = faqService.getFaq(faqCode);
+        Faq faq =faqQueryService.getFaq(faqCode);
         if(faq == null) {
             return  ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 조회 실패",faqCode ));
         }
@@ -38,6 +38,6 @@ public class FaqQueryController {
         /* role 확인 후, 관리자면 전체 조회, 일반 유저면 public 데이터만 조회*/
 
         /* 공지사항이 있으면 조회 후 반환 */
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공", pageable));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 전체 조회 성공", faqQueryService.getNoticeListWidthPaging(pageable)));
     }
 }

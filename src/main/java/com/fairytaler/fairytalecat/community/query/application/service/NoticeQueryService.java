@@ -10,14 +10,14 @@ import java.util.Optional;
 
 @Service
 public class NoticeQueryService {
-    private NoticeQueryDAO noticeDao;
+    private NoticeQueryDAO noticeQueryDao;
 
-    public NoticeQueryService(NoticeQueryDAO noticeDao){
-        this.noticeDao = noticeDao;
+    public NoticeQueryService(NoticeQueryDAO noticeQueryDao){
+        this.noticeQueryDao = noticeQueryDao;
     }
     public Optional<Notice> getNotice(Long noticeCode){
         /* 공지사항 조회 */
-        Optional<Notice> notice = noticeDao.findByNoticeCode(noticeCode);
+        Optional<Notice> notice = noticeQueryDao.findByNoticeCode(noticeCode);
         if(notice == null){
 //            throw new NoMemberException(); //예외 처리
             System.out.println("해당 번호의 공지사항이 없습니다.");
@@ -26,7 +26,7 @@ public class NoticeQueryService {
     }
 
     public Page<Notice> getNoticeListWidthPaging(Pageable pageable){
-        Page<Notice> notice = noticeDao.findAll(pageable);
+        Page<Notice> notice = noticeQueryDao.findAll(pageable);
 
         if(notice == null){
 //            throw new NoMemberException(); //예외 처리
