@@ -19,21 +19,25 @@ public class NoticeController {
     
     /* 공지사항 입력 */
     @PostMapping("/notices")
-    public ResponseEntity<ResponseDTO> selectNoticeListWithPaging(@RequestBody NoticeRequestDTO noticeRequestDTO){
+    public ResponseEntity<ResponseDTO> registNotice(@RequestBody NoticeRequestDTO noticeRequestDTO){
         System.out.println(noticeRequestDTO);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공", noticeService.registNotice(noticeRequestDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 입력 성공", noticeService.registNotice(noticeRequestDTO)));
     }
+    /* 공지사항 내용 수정*/
     @PutMapping("/notices")
     public ResponseEntity<ResponseDTO> updateNotice(@RequestBody NoticeRequestDTO noticeRequestDTO){
         System.out.println(noticeRequestDTO);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공", noticeService.updateNotice(noticeRequestDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 수정 성공", noticeService.updateNotice(noticeRequestDTO)));
     }
+    /* 공지사항 비공개*/
     @PutMapping("/notices/{noticeCode}")
     public ResponseEntity<ResponseDTO> updateNoticeToPublic(@PathVariable Long noticeCode,@RequestParam(name="isPublic", defaultValue="true") boolean isPublic){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 비공개 설정 성공",  noticeService.updateNoticeToPublic(noticeCode, isPublic)));
     }
+
+    /* 공지사항 삭제 */
     @DeleteMapping("/notices/{noticeCode}")
     public ResponseEntity<ResponseDTO> privateNotice(@PathVariable Long noticeCode){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 비공개 설정 성공", noticeService.deleteNotice(noticeCode)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 삭제 성공", noticeService.deleteNotice(noticeCode)));
     }
 }
