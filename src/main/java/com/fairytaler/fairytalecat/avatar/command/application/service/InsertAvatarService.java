@@ -4,6 +4,8 @@ import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
 import com.fairytaler.fairytalecat.avatar.query.dto.AvatarRequestDTO;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
+import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.command.application.dto.TokenDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,16 @@ public class InsertAvatarService {
         return avatar.getMemberCode();
     }
 
+    @Transactional
+    public Avatar InitialAvatar(Long memberCode){
+        Avatar avatar = new Avatar();
+        avatar.setMemberCode(memberCode);
+        avatar.setAnimal("0");
+        avatar.setMaterial("0");
+        avatar.setObjectName("0");
+        avatarRepository.save(avatar);
+        return avatar;
+    }
 
 
 }
