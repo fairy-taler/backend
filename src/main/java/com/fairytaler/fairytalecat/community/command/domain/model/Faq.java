@@ -1,6 +1,7 @@
 package com.fairytaler.fairytalecat.community.command.domain.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @SequenceGenerator(
@@ -29,21 +30,12 @@ public class Faq {
     private String answer;
 
     @Column(name="CREATE_DATE")
-    private String createDate;
+    private Date createDate;
 
     @Column(name="IS_PUBLIC")
     private boolean isPublic;
 
     public Faq(){}
-
-    public Faq(Long faqCode, String title, String content, String answer, String createDate, boolean isPublic) {
-        this.faqCode = faqCode;
-        this.title = title;
-        this.content = content;
-        this.answer = answer;
-        this.createDate = createDate;
-        this.isPublic = isPublic;
-    }
 
     public Long getFaqCode() {
         return faqCode;
@@ -77,11 +69,11 @@ public class Faq {
         this.answer = answer;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
@@ -100,7 +92,7 @@ public class Faq {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", answer='" + answer + '\'' +
-                ", createDate='" + createDate + '\'' +
+                ", createDate=" + createDate +
                 ", isPublic=" + isPublic +
                 '}';
     }
