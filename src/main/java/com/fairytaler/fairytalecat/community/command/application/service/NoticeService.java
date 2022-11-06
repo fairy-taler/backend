@@ -61,8 +61,9 @@ public class NoticeService {
         Optional<Notice> oNotice = noticeDAO.findById(noticeCode);
         if(oNotice.isPresent()) {
             noticeDAO.delete(oNotice.get());
+            return noticeCode;
         }
 
-        return noticeCode;
+        return null;
     }
 }

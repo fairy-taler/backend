@@ -52,12 +52,26 @@ public class FaqService {
         Optional<Faq> oFaq = faqDAO.findById(faqCode);
 
         /* 데이터 삽입 */
-        Faq faq = oFaq.get();
+        try{
 
-        faq.setPublic(isPublic);
+            Faq faq = oFaq.get();
 
-         faqDAO.save(faq);
+            faq.setPublic(isPublic);
 
-        return faq;
+            faqDAO.save(faq);
+
+            return faq;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
+    public Long deleteFaq(Long faqCode){
+        Optional<Faq> oFaq = faqDAO.findById(faqCode);
+        if(oFaq.isPresent()) {
+            faqDAO.delete(oFaq.get());
+            return faqCode;
+        }
+        return null;
     }
 }
