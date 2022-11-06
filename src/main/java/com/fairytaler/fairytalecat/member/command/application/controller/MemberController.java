@@ -1,7 +1,7 @@
-package com.fairytaler.fairytalecat.member.controller;
+package com.fairytaler.fairytalecat.member.command.application.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
-import com.fairytaler.fairytalecat.member.service.MemberService;
+import com.fairytaler.fairytalecat.member.command.application.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

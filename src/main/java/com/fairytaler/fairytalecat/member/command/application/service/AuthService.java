@@ -1,12 +1,12 @@
-package com.fairytaler.fairytalecat.member.service;
+package com.fairytaler.fairytalecat.member.command.application.service;
 
 import com.fairytaler.fairytalecat.exception.DuplicatedMemberIdException;
 import com.fairytaler.fairytalecat.exception.FullInputMemberInfoException;
 import com.fairytaler.fairytalecat.exception.LoginFailedException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
-import com.fairytaler.fairytalecat.member.dao.MemberMapper;
-import com.fairytaler.fairytalecat.member.dto.MemberDTO;
-import com.fairytaler.fairytalecat.member.dto.TokenDTO;
+import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
+import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.command.application.dto.TokenDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
