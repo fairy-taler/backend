@@ -48,5 +48,16 @@ public class FaqService {
             return null;
         }
     }
+    public Faq updateFaqToPublic(Long faqCode, boolean isPublic){
+        Optional<Faq> oFaq = faqDAO.findById(faqCode);
 
+        /* 데이터 삽입 */
+        Faq faq = oFaq.get();
+
+        faq.setPublic(isPublic);
+
+         faqDAO.save(faq);
+
+        return faq;
+    }
 }
