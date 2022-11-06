@@ -2,6 +2,7 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 
 import com.fairytaler.fairytalecat.community.command.application.dao.FaqDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
+import com.fairytaler.fairytalecat.community.command.application.dto.NoticeRequestDTO;
 import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
 import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,22 @@ public class FaqService {
         faqDAO.save(faq);
 
         return faq;
+    }
+    public Faq updateFaq(FaqRequestDTO faqRequestDTO){
+        Optional<Faq> oFaq = faqDAO.findById(faqRequestDTO.getFaqCode());
 
+        /* 데이터 삽입 */
+        try{
+            Faq faq = oFaq.get();
+            faq.setTitle(faqRequestDTO.getTitle());
+            faq.setContent(faqRequestDTO.getContent());
+
+            faqDAO.save(faq);
+            return faq;
+        }
+        catch (Exception exception){
+            return null;
+        }
     }
 
 }
