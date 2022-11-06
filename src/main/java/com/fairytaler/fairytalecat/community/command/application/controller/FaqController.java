@@ -34,7 +34,22 @@ public class FaqController {
     /* FAQ 비공개*/
     @PutMapping("/faq/{faqCode}")
     public ResponseEntity<ResponseDTO> updateNoticeToPublic(@PathVariable Long faqCode, @RequestParam(name="isPublic", defaultValue="true") boolean isPublic){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 비공개 설정 성공",  faqService.updateFaqToPublic(faqCode, isPublic)));
+        Faq faq = faqService.updateFaqToPublic(faqCode, isPublic);
+        if(faq == null) {
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK,   "FAQ 비공개 설정 실패", faqCode + "번 FAQ가 존재하지 않음"));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 비공개 설정 성공", faq));
+    }
+
+    /*  FAQ 삭제 */
+    @DeleteMapping("/faq/{faqCode}")
+    public ResponseEntity<ResponseDTO> privateNotice(@PathVariable Long faqCode){
+        Long result = faqService.deleteFaq(faqCode);
+        System.out.println(result);
+        if(result == null){
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 삭제 실패", faqCode + "번 코드 FAQ가 존재하지 않습니다."));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 삭제 성공", faqService.deleteFaq(faqCode)));
     }
 
 }
