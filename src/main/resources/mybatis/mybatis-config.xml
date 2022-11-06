@@ -10,7 +10,7 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.fairytaler.fairytalecat.member.dto.MemberDTO" alias="MemberDTO"/>
+        <typeAlias type="com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO" alias="MemberDTO"/>
     </typeAliases>
 
     <mappers>
