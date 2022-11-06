@@ -5,7 +5,6 @@ import com.fairytaler.fairytalecat.avatar.command.application.service.SearchAvat
 import com.fairytaler.fairytalecat.avatar.command.application.service.UpdateAvatarService;
 import com.fairytaler.fairytalecat.avatar.query.dto.AvatarRequestDTO;
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
-import com.fairytaler.fairytalecat.member.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

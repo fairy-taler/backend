@@ -1,8 +1,8 @@
-package com.fairytaler.fairytalecat.member.service;
+package com.fairytaler.fairytalecat.member.command.application.service;
 
 import com.fairytaler.fairytalecat.exception.UserNotFoundException;
-import com.fairytaler.fairytalecat.member.dao.MemberMapper;
-import com.fairytaler.fairytalecat.member.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
+import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,4 +1,4 @@
-package com.fairytaler.fairytalecat.member.dto;
+package com.fairytaler.fairytalecat.member.command.application.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
