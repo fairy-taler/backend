@@ -1,14 +1,16 @@
 package com.fairytaler.fairytalecat.member.command.application.service;
 
-import com.fairytaler.fairytalecat.avatar.command.application.service.InsertAvatarService;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
-import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
-import com.fairytaler.fairytalecat.member.query.dto.ResponseMemberDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInfoDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -17,33 +19,34 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final AvatarRepository avatarRepository;
-    private final InsertAvatarService insertAvatarService;
+    private final MemberInfoRepository memberInfoRepository;
 
-    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, InsertAvatarService insertAvatarService) {
+    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.memberRepository = memberRepository;
-        this.avatarRepository = avatarRepository;
-        this.insertAvatarService = insertAvatarService;
+        this.memberInfoRepository = memberInfoRepository;
     }
 
-    public MemberDTO findMemberById(String accessToken) {
-        String memberId = tokenProvider.getUserId(accessToken);
-        MemberDTO member = memberMapper.findById(memberId);
-        return member;
-    }
+    public Member updateMemberInfo(String accessToken, RequestMemberInfoDTO requestMemberInfoDTO) {
 
-    public ResponseMemberDTO findOptionalInfo(String accessToken) {
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
-        ResponseMemberDTO responseMember = new ResponseMemberDTO();
-        responseMember.setMember(memberRepository.findByMemberCode(memberCode));
-        if(avatarRepository.findByMemberCode(memberCode) == null){
-            responseMember.setAvatar(insertAvatarService.InitialAvatar(memberCode));
-        }else {
-            responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
+        Optional<Member> optionalMember = Optional.of(memberInfoRepository.findByMemberCode(memberCode));
+
+        try{
+            Member member = optionalMember.get();
+            member.setMemberName(requestMemberInfoDTO.getMemberName());
+            member.setNickname(requestMemberInfoDTO.getNickname());
+            member.setEmail(requestMemberInfoDTO.getEmail());
+            member.setPhone(requestMemberInfoDTO.getPhone());
+
+            memberInfoRepository.save(member);
+            return member;
         }
-        return responseMember;
+        catch (Exception exception){
+            return null;
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-package com.fairytaler.fairytalecat.member.query.dto;
+package com.fairytaler.fairytalecat.member.query.apllication.dto;
 
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.member.domain.model.OptionalMemberInfo;
