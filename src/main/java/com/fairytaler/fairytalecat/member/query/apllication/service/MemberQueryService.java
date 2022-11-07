@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberService {
+public class MemberQueryService {
 
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
@@ -21,7 +21,7 @@ public class MemberService {
     private final AvatarRepository avatarRepository;
     private final MemberInfoRepository memberInfoRepository;
 
-    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository) {
+    public MemberQueryService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
