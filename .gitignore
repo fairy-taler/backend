@@ -32,5 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2b43e25bfc6f9c8bd2f7cb9af09d464a9954586e
 ### yml ###
 .yml
