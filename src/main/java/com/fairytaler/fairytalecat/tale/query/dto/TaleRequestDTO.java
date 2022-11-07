@@ -15,13 +15,6 @@ import java.util.List;
 @ToString
 public class TaleRequestDTO {
     private String title;
-<<<<<<< HEAD
     private List<TalePage> pages;
-=======
-    private String createAt;
-    private List<TalePage> pages;
-
->>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
     public TaleRequestDTO() {}
-
 }
