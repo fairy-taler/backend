@@ -1,5 +1,6 @@
 package com.fairytaler.fairytalecat.member.query.apllication.service;
 
+import com.fairytaler.fairytalecat.avatar.command.application.service.InsertAvatarService;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
@@ -20,14 +21,16 @@ public class MemberQueryService {
     private final MemberRepository memberRepository;
     private final AvatarRepository avatarRepository;
     private final MemberInfoRepository memberInfoRepository;
+    private final InsertAvatarService insertAvatarService;
 
-    public MemberQueryService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository) {
+    public MemberQueryService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository, InsertAvatarService insertAvatarService) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.memberRepository = memberRepository;
         this.avatarRepository = avatarRepository;
         this.memberInfoRepository = memberInfoRepository;
+        this.insertAvatarService = insertAvatarService;
     }
 
     public MemberDTO findMemberById(String accessToken) {
@@ -40,8 +43,11 @@ public class MemberQueryService {
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
         ResponseMemberDTO responseMember = new ResponseMemberDTO();
         responseMember.setMember(memberRepository.findByMemberCode(memberCode));
-        responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
-
+        if(avatarRepository.findByMemberCode(memberCode) == null){
+            responseMember.setAvatar(insertAvatarService.InitialAvatar(memberCode));
+        }else {
+            responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
+        }
         return responseMember;
     }
 
