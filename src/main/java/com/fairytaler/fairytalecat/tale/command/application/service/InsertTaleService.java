@@ -9,7 +9,10 @@ import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
 import java.util.Date;
+=======
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 import java.util.List;
 
 @Service
@@ -34,7 +37,11 @@ public class InsertTaleService {
         /* 동화 데이터 엔티티에 넣기 */
         tale.setPages(taleRequestDTO.getPages());
         tale.setTitle(taleRequestDTO.getTitle());
+<<<<<<< HEAD
         tale.setCreateAt(new Date());
+=======
+        tale.setCreateAt(taleRequestDTO.getCreateAt());
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         String memberCode = tokenProvider.getUserCode(accessToken);
