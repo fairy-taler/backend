@@ -4,10 +4,12 @@ import com.fairytaler.fairytalecat.community.command.application.dao.InquiryDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.InquiryRequestDTO;
 import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
 import com.fairytaler.fairytalecat.community.command.domain.model.Inquiry;
+import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class InquiryService {
@@ -31,5 +33,22 @@ public class InquiryService {
         inquiryDAO.save(inquiry);
 
         return inquiry;
+    }
+    public Inquiry insertInquiryAnswer(InquiryRequestDTO inquiryRequestDTO) {
+
+        Optional<Inquiry> oInquiry = inquiryDAO.findById(inquiryRequestDTO.getInquiryCode());
+
+        /* 데이터 수정 */
+        try{
+            Inquiry inquiry = oInquiry.get();
+            inquiry.setAnswer(inquiryRequestDTO.getAnswer());
+            inquiry.setAnswerDate(new Date());
+
+            inquiryDAO.save(inquiry);
+        return inquiry;
+    }
+        catch (Exception exception){
+            return null;
+        }
     }
 }

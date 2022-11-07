@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class InquiryRequestDTO {
+    private Long inquiryCode;
     private String title;
     private String content;
     private String answer;
