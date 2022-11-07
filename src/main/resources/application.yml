@@ -18,7 +18,7 @@ jwt:
 
 tts:
   clientId: worve3q5dw
-  secret: VIT71M3mIpPJgcwBQHiZxsenEL4ZHctGQCSDG8wO
+  secret: qmNOlcqsykbE6ZWW3Dm9eiFiXq0SSoHbpYoQrCWb
 
 mybatis:
   mapper-locations: mybatis/mapper/*.xml
