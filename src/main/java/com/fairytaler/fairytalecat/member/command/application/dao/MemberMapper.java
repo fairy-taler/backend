@@ -1,9 +1,8 @@
-package com.fairytaler.fairytalecat.member.dao;
+package com.fairytaler.fairytalecat.member.command.application.dao;
 
-import com.fairytaler.fairytalecat.member.dto.MemberDTO;
+import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 import java.util.Optional;
 
 @Mapper

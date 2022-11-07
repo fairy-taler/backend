@@ -28,7 +28,26 @@ public class TaleController {
     @PostMapping("/insert-tale")
     public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByTaleCode(id)));
+    }
+
+    @GetMapping("/mylist")
+    public ResponseEntity<ResponseDTO> searchTaleBymemberId(@RequestHeader String accessToken) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByTaleCode(id)));
+    }
+
+    @GetMapping("/mylist")
+    public ResponseEntity<ResponseDTO> searchTaleBymemberId(@RequestHeader String accessToken) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
     }
 
     @GetMapping("/{id}")

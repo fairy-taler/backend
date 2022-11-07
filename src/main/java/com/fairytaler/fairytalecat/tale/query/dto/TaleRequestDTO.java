@@ -1,52 +1,27 @@
 package com.fairytaler.fairytalecat.tale.query.dto;
 
 import com.fairytaler.fairytalecat.tale.domain.model.TalePage;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
 public class TaleRequestDTO {
     private String title;
+<<<<<<< HEAD
+    private List<TalePage> pages;
+=======
     private String createAt;
     private List<TalePage> pages;
 
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
     public TaleRequestDTO() {}
 
-    public TaleRequestDTO(String title, String createAt, List<TalePage> pages) {
-        this.title = title;
-        this.createAt = createAt;
-        this.pages = pages;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
-    }
-
-    public List<TalePage> getPages() {
-        return pages;
-    }
-
-    public void setPages(List<TalePage> pages) {
-        this.pages = pages;
-    }
-
-    @Override
-    public String toString() {
-        return "TaleRequestDTO{" +
-                "title='" + title + '\'' +
-                ", createAt='" + createAt + '\'' +
-                ", pages=" + pages +
-                '}';
-    }
 }

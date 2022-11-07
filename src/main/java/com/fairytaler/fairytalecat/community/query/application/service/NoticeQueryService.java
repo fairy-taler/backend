@@ -10,6 +10,19 @@ import java.util.Optional;
 
 @Service
 public class NoticeQueryService {
+<<<<<<< HEAD
+<<<<<<< HEAD
+    private NoticeQueryDAO noticeQueryDao;
+
+    public NoticeQueryService(NoticeQueryDAO noticeQueryDao){
+        this.noticeQueryDao = noticeQueryDao;
+    }
+    public Optional<Notice> getNotice(Long noticeCode){
+        /* 공지사항 조회 */
+        Optional<Notice> notice = noticeQueryDao.findByNoticeCode(noticeCode);
+=======
+=======
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
     private NoticeQueryDAO noticeDao;
 
     public NoticeQueryService(NoticeQueryDAO noticeDao){
@@ -18,6 +31,10 @@ public class NoticeQueryService {
     public Optional<Notice> getNotice(Long noticeCode){
         /* 공지사항 조회 */
         Optional<Notice> notice = noticeDao.findByNoticeCode(noticeCode);
+<<<<<<< HEAD
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
+=======
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
         if(notice == null){
 //            throw new NoMemberException(); //예외 처리
             System.out.println("해당 번호의 공지사항이 없습니다.");
@@ -26,7 +43,15 @@ public class NoticeQueryService {
     }
 
     public Page<Notice> getNoticeListWidthPaging(Pageable pageable){
+<<<<<<< HEAD
+<<<<<<< HEAD
+        Page<Notice> notice = noticeQueryDao.findAll(pageable);
+=======
         Page<Notice> notice = noticeDao.findAll(pageable);
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
+=======
+        Page<Notice> notice = noticeDao.findAll(pageable);
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 
         if(notice == null){
 //            throw new NoMemberException(); //예외 처리

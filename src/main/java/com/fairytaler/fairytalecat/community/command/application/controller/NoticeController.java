@@ -16,7 +16,7 @@ public class NoticeController {
         this.tokenProvider = tokenProvider;
         this.noticeService = noticeService;
     }
-    
+
     /* 공지사항 입력 */
     @PostMapping("/notices")
     public ResponseEntity<ResponseDTO> selectNoticeListWithPaging(@RequestBody NoticeRequestDTO noticeRequestDTO){
