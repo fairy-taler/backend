@@ -1,13 +1,10 @@
-package com.fairytaler.fairytalecat.member.command.application.controller;
+package com.fairytaler.fairytalecat.member.query.apllication.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
-import com.fairytaler.fairytalecat.member.command.application.service.MemberService;
+import com.fairytaler.fairytalecat.member.query.apllication.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/members")
@@ -26,6 +23,11 @@ public class MemberController {
     @GetMapping("/optional-info")
     public ResponseEntity<ResponseDTO> findOptionalInfo(@RequestHeader String accessToken){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberService.findOptionalInfo(accessToken)));
+    }
+
+    @GetMapping("/all-info")
+    public ResponseEntity<ResponseDTO> findAllInfo(@RequestHeader String accessToken){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberService.findAllInfo(accessToken)));
     }
 
 }
