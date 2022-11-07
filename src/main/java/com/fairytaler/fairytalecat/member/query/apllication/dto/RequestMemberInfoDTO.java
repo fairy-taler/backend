@@ -1,15 +1,15 @@
 package com.fairytaler.fairytalecat.member.query.apllication.dto;
 
-public class ResponseMemberInfoDTO {
+public class RequestMemberInfoDTO {
 
     private String memberName;
     private String email;
     private String phone;
     private String nickname;
 
-    public ResponseMemberInfoDTO(){}
+    public RequestMemberInfoDTO(){}
 
-    public ResponseMemberInfoDTO(String memberName, String email, String phone, String nickname) {
+    public RequestMemberInfoDTO(String memberName, String email, String phone, String nickname) {
         this.memberName = memberName;
         this.email = email;
         this.phone = phone;
