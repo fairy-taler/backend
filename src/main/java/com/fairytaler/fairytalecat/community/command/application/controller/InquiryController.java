@@ -22,13 +22,24 @@ public class InquiryController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 등록 성공", inquiryService.insertInquiry(accessToken,inquiryRequestDTO)));
     }
 
-    /* 1대 1 문의 답변 등록*/
+    /* 1대1 문의 답변 등록*/
     @PutMapping("/inquiry/answer")
     public ResponseEntity<ResponseDTO> insertInquiry(@RequestBody InquiryRequestDTO inquiryRequestDTO){
         Inquiry inquiry =  inquiryService.insertInquiryAnswer(inquiryRequestDTO);
+        if(inquiry==null){
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 답변 실패",inquiryRequestDTO.getInquiryCode()+"번 문의가 존재하지 않습니다."));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 답변 성공",inquiry));
+    }
+    
+    /* 1대1 문의 수정 */
+    @PutMapping("/inquiry")
+    public ResponseEntity<ResponseDTO> updateInquiry(@RequestBody InquiryRequestDTO inquiryRequestDTO){
+        Inquiry inquiry =  inquiryService.updateInquiry(inquiryRequestDTO);
         if(inquiry==null){
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 수정 실패",inquiryRequestDTO.getInquiryCode()+"번 문의가 존재하지 않습니다."));
         }
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 수정 성공",inquiry));
     }
+
 }

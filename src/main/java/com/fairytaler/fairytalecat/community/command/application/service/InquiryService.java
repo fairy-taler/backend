@@ -51,4 +51,21 @@ public class InquiryService {
             return null;
         }
     }
+    public Inquiry updateInquiry(InquiryRequestDTO inquiryRequestDTO){
+
+        Optional<Inquiry> oInquiry = inquiryDAO.findById(inquiryRequestDTO.getInquiryCode());
+
+        /* 데이터 수정 */
+        try{
+            Inquiry inquiry = oInquiry.get();
+            inquiry.setTitle(inquiryRequestDTO.getTitle());
+            inquiry.setContent(inquiryRequestDTO.getContent());
+
+            inquiryDAO.save(inquiry);
+            return inquiry;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
 }
