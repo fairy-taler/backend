@@ -17,5 +17,4 @@ public class TaleRequestDTO {
     private String title;
     private List<TalePage> pages;
     public TaleRequestDTO() {}
-
 }
