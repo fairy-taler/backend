@@ -2,11 +2,14 @@ package com.fairytaler.fairytalecat.tts.application;
 // 네이버 음성합성 Open API 예제
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.Date;
 
 @Service
@@ -20,7 +23,8 @@ public class TTSService {
         this.clientSecret = clientSecret;
     }
 
-   public String ResponseTTS(String str) {
+   public byte[] ResponseTTS(String str) {
+        byte[] returnByte = null;
         try {
             String text = URLEncoder.encode(str, "UTF-8"); // 13자
             String apiURL = "https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts";
@@ -50,6 +54,11 @@ public class TTSService {
                 while ((read =is.read(bytes)) != -1) {
                     outputStream.write(bytes, 0, read);
                 }
+//
+//                multipartFile = new MockMultipartFile("test.mp3", new FileInputStream(f));
+//                System.out.println("multipartFile = " + multipartFile);
+
+                returnByte = Files.readAllBytes(f.toPath());
                 is.close();
             } else {  // 오류 발생
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
@@ -64,6 +73,6 @@ public class TTSService {
         } catch (Exception e) {
             System.out.println(e);
         }
-       return "";
+       return returnByte;
     }
 }
