@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.community.command.application.controller;
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.InquiryRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.service.InquiryService;
+import com.fairytaler.fairytalecat.community.command.domain.model.Inquiry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +23,12 @@ public class InquiryController {
     }
 
     /* 1대 1 문의 답변 등록*/
-
+    @PutMapping("/inquiry/answer")
+    public ResponseEntity<ResponseDTO> insertInquiry(@RequestBody InquiryRequestDTO inquiryRequestDTO){
+        Inquiry inquiry =  inquiryService.insertInquiryAnswer(inquiryRequestDTO);
+        if(inquiry==null){
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 수정 실패",inquiryRequestDTO.getInquiryCode()+"번 문의가 존재하지 않습니다."));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "1대1문의 수정 성공",inquiry));
+    }
 }
