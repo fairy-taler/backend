@@ -10,7 +10,10 @@ import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
 import org.springframework.stereotype.Service;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.Date;
+=======
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 =======
 >>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 import java.util.List;
@@ -38,7 +41,11 @@ public class InsertTaleService {
         tale.setPages(taleRequestDTO.getPages());
         tale.setTitle(taleRequestDTO.getTitle());
 <<<<<<< HEAD
+<<<<<<< HEAD
         tale.setCreateAt(new Date());
+=======
+        tale.setCreateAt(taleRequestDTO.getCreateAt());
+>>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
 =======
         tale.setCreateAt(taleRequestDTO.getCreateAt());
 >>>>>>> 6cb2edb410ca478b1a0aa4cc51b1687a451b64b9
