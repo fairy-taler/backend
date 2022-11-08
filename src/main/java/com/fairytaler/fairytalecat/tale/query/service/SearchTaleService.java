@@ -1,12 +1,8 @@
-package com.fairytaler.fairytalecat.tale.command.application.service;
+package com.fairytaler.fairytalecat.tale.query.service;
 
-import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
-import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleListRepository;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service
