@@ -37,7 +37,7 @@ public class TaleController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTTSTale(accessToken,taleTTSRequestDTO)));
     }
 
-    @PostMapping("/insert-tale/voice")
+    @PostMapping("/voice")
     public ResponseEntity<ResponseDTO> insertTaleVocie(@RequestHeader String accessToken, @ModelAttribute TaleVoiceRequestDTO taleVoiceRequestDTO) {
         System.out.println(taleVoiceRequestDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTaleVoice(accessToken,taleVoiceRequestDTO)));
