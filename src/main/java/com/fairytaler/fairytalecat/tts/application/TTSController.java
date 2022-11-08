@@ -20,7 +20,7 @@ public class TTSController {
         this.ttsService = ttsService;
     }
 
-    @GetMapping(
+    @PostMapping(
             value = "/play",
             produces = "audio/wav"
     )

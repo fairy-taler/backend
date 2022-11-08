@@ -1,25 +1,22 @@
 package com.fairytaler.fairytalecat.tale.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
+@ToString
 public class TalePage {
 
     private String page;
+
     private List<String> data;
 
-    public TalePage(String page, List<String> data) {
-        this.page = page;
-        this.data = data;
-    }
+    private String audioUrl;
 
-    @Override
-    public String toString() {
-        return "TalePage{" +
-                "page='" + page + '\'' +
-                ", data=" + data +
-                '}';
-    }
 }
