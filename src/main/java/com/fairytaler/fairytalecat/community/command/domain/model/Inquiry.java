@@ -31,7 +31,7 @@ public class Inquiry {
     private String title;
     private String content;
     private String answer;
-    private Long memberCode;
+    private String memberCode;
     private Date createDate;
     private Date answerDate;
 

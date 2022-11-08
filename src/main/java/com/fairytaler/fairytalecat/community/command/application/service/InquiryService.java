@@ -29,7 +29,7 @@ public class InquiryService {
 
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         String memberCode = tokenProvider.getUserCode(accessToken);
-        inquiry.setMemberCode(Long.parseLong(memberCode));
+        inquiry.setMemberCode(memberCode);
         inquiryDAO.save(inquiry);
 
         return inquiry;
