@@ -1,4 +1,4 @@
-package com.fairytaler.fairytalecat.tale.domain.model;
+package com.fairytaler.fairytalecat.tale.query.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,15 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @ToString
-public class TalePage {
-
+public class TaleVoicePage {
     private String page;
 
     private List<String> data;
 
-    private String audioUrl;
+    private MultipartFile voice;
 
-    public TalePage(){}
+    public TaleVoicePage(){}
 }
