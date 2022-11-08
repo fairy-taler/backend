@@ -4,6 +4,7 @@ import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.tale.command.application.service.InsertTaleService;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
+import com.fairytaler.fairytalecat.tale.query.dto.TaleTTSRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,11 @@ public class TaleController {
     @PostMapping("/insert-tale")
     public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
+    }
+
+    @PostMapping("/tts")
+    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTTSTale(accessToken,taleTTSRequestDTO)));
     }
 
 }
