@@ -6,11 +6,17 @@ import com.fairytaler.fairytalecat.tale.command.application.service.SearchTaleSe
 import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
+import com.fairytaler.fairytalecat.tale.query.dto.TaleVoiceRequestDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/tale") // 데이터 리턴 서버
 public class TaleController {
     // DI
@@ -40,4 +46,9 @@ public class TaleController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
     }
 
+    @PostMapping("/insert-tale/voice")
+    public ResponseEntity<ResponseDTO> insertTaleVocie(@RequestHeader String accessToken, @ModelAttribute TaleVoiceRequestDTO taleVoiceRequestDTO) {
+        System.out.println(taleVoiceRequestDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTaleVoice(accessToken,taleVoiceRequestDTO)));
+    }
 }
