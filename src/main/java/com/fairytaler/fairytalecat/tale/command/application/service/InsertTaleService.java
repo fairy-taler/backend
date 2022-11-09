@@ -1,5 +1,9 @@
 package com.fairytaler.fairytalecat.tale.command.application.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.mongoTest.model.MongoDBTestModel;
@@ -9,6 +13,13 @@ import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.model.TalePage;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
+import com.fairytaler.fairytalecat.tale.query.dto.TaleVoicePage;
+import com.fairytaler.fairytalecat.tale.query.dto.TaleVoiceRequestDTO;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleTTSRequestDTO;
 import com.fairytaler.fairytalecat.tts.application.TTSService;
 import org.springframework.mock.web.MockMultipartFile;
@@ -17,12 +28,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InsertTaleService {
+
 
     private TokenProvider tokenProvider;
     static private TaleRepository taleRepository;
@@ -49,6 +59,48 @@ public class InsertTaleService {
         tale.setTitle(taleRequestDTO.getTitle());
         tale.setCreateAt(new Date());
 
+        /* 사용자 정보 (작성자) 가져와서 넣기 */
+        String memberCode = tokenProvider.getUserCode(accessToken);
+        System.out.println("memberCode = " + memberCode);
+        tale.setMemberCode(memberCode);
+        System.out.println("[insertTaleService : Tale entity] \n" + tale);
+
+        /* 테일 */
+//        if (mongoDBTestRepository.findByName(name) != null) {
+//            log.info("[Service][update] name is already exist!!");
+//            mongoDBTestModel.setId(mongoDBTestRepository.findByName(name).getId());
+//        } else {
+//            log.info("[Service][insert] New name received!!");
+//        }
+
+        taleRepository.save(tale);
+
+        return "성공";
+    }
+    public Object insertTaleVoice(String accessToken, TaleVoiceRequestDTO taleRequestDTO) {
+
+        /* 동화 정보 확인(출력) */
+        System.out.println("[insertTaleService : TaleRequestDTO ] \n" + taleRequestDTO);
+
+        /* 엔티티 생성 */
+        Tale tale = new Tale();
+
+        /* 동화 데이터 엔티티에 넣기 */
+        tale.setTitle(taleRequestDTO.getTitle());
+        tale.setCreateAt(new Date());
+
+        List<TalePage> pages = new ArrayList<>();
+        /* 동화 페이지 안에 있는 음성 파일 S3에 저장 후, 저장 위치 저장*/
+        for(TaleVoicePage voicePage : taleRequestDTO.getPages()){
+            /* 동화 안에 있는 음성 파일 s3에 저장*/
+            String url = awsS3InsertService.uploadFileByMultipartFile(voicePage.getVoice());
+
+            /* 반환받은 url을 entity에 저장*/
+
+            TalePage page = new TalePage(voicePage.getPage(), voicePage.getData(), url);
+            pages.add(page);
+        }
+        tale.setPages(pages);
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         String memberCode = tokenProvider.getUserCode(accessToken);
         System.out.println("memberCode = " + memberCode);
