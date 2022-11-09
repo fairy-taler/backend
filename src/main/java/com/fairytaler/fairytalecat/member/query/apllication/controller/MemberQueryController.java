@@ -35,4 +35,10 @@ public class MemberQueryController {
     public ResponseEntity<ResponseDTO> searchId(@RequestBody RequestSearchIdDTO requestSearchIdDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 아이디 조회 성공", memberQueryService.searchId(requestSearchIdDTO)));
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<ResponseDTO> findAllMember(@RequestHeader String accessToken){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "전체 회원 조회 성공", memberQueryService.findAllMember(accessToken)));
+    }
+
 }
