@@ -1,8 +1,6 @@
 package com.fairytaler.fairytalecat.community.query.application.service;
 
-import antlr.Token;
 import com.fairytaler.fairytalecat.community.command.domain.model.Inquiry;
-import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
 import com.fairytaler.fairytalecat.community.query.application.dao.InquiryQueryDAO;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.data.domain.Page;

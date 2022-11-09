@@ -9,6 +9,7 @@ import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,24 +46,14 @@ public class ForumService {
 
         /* 데이터 생성 */
         Comment comment = new Comment();
-        /* 게시글 정보 넣기 */
-        /* 댓글을 단 게시글 가져와서 댓글에 넣기 */
-        Optional<Forum> oForum = forumDAO.findById(commentRequestDTO.getForumCode());
-        Forum forum;
-        try {
-            forum = oForum.get();
-        }catch(Exception exception){
-            return null;
-        }
-        comment.setForum(forum);  // 주인인 엔티티가 세팅
 
-        /* 게시글에 댓글 정보 추가 */
-        forum.getComments().add(comment);
         comment.setContent(commentRequestDTO.getContent());
         comment.setCreateDate(new Date());
         comment.setMemberCode(tokenProvider.getUserCode(accessToken));
+        comment.setForumCode(commentRequestDTO.getForumCode());
 
-        forumDAO.save(forum);
+        /* 사용자 정보 (작성자) 가져와서 넣기 */
+        comment.setMemberCode(tokenProvider.getUserCode(accessToken));
         commentDAO.save(comment);
 
         return commentRequestDTO.getContent();

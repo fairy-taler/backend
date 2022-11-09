@@ -12,7 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-@ToString
 @Entity
 @SequenceGenerator(
         name = "SEQ_COMMENT_CODE"
@@ -26,16 +25,16 @@ public class Comment {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE
             , generator = "SEQ_COMMENT_CODE"
-    )
+    )@Column(name = "COMMENT_CODE")
     private Long commentCode;
+    @Column(name = "CONTENT")
     private String content;
+    @Column(name = "MEMBER_CODE")
     private String memberCode;
+    @Column(name = "CREATE_DATE")
     private Date createDate;
-//    private Long forumCode;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JsonManagedReference // 순환참조 방지
-    @JoinColumn(name = "FORUM_CODE")
-    private Forum forum;
+    @Column(name = "FORUM_CODE")
+    private Long forumCode;
 
     public Comment(){}
 
