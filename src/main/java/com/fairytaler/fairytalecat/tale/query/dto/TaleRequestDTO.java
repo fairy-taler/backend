@@ -15,6 +15,6 @@ import java.util.List;
 @ToString
 public class TaleRequestDTO {
     private String title;
-    private List<TalePage> pages;
+    private List<TalePageRequestDTO> pages;
     public TaleRequestDTO() {}
 }

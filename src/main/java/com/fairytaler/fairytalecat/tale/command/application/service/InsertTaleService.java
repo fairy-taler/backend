@@ -12,15 +12,13 @@ import com.fairytaler.fairytalecat.tale.domain.model.TTSTalePage;
 import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.model.TalePage;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
-import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
-import com.fairytaler.fairytalecat.tale.query.dto.TaleVoicePage;
-import com.fairytaler.fairytalecat.tale.query.dto.TaleVoiceRequestDTO;
+import com.fairytaler.fairytalecat.tale.query.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import com.fairytaler.fairytalecat.tale.query.dto.TaleTTSRequestDTO;
+
 import com.fairytaler.fairytalecat.tts.application.TTSService;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ import java.util.*;
 
 @Service
 public class InsertTaleService {
-
 
     private TokenProvider tokenProvider;
     static private TaleRepository taleRepository;
@@ -48,32 +45,50 @@ public class InsertTaleService {
 
     public Object insertTale(String accessToken, TaleRequestDTO taleRequestDTO) {
 
-        /* 동화 정보 확인(출력) */
         System.out.println("[insertTaleService : TaleRequestDTO ] \n" + taleRequestDTO);
 
         /* 엔티티 생성 */
         Tale tale = new Tale();
 
         /* 동화 데이터 엔티티에 넣기 */
-        tale.setPages(taleRequestDTO.getPages());
+        // tale.setPages(TaleTTSRequestDTO.getPages());
+
+        List<TalePage> pages = new LinkedList<>();
+
+        for(TalePageRequestDTO talePage : taleRequestDTO.getPages()){
+            /* ttsText에 값이 들어온다면 */
+            if(!talePage.getTtsText().toString().equals("")){
+                byte[] bytes = ttsService.ResponseTTS(talePage.getTtsText());
+
+                InputStream inputStream = new ByteArrayInputStream(bytes);
+
+                String url = awsS3InsertService.uploadFile(inputStream);
+
+                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url);
+                pages.add(page);
+            }
+            /* 음성 파일이 들어온다면 */
+            if(talePage.getVoice().getSize() != 0 ){
+                String url = awsS3InsertService.uploadFileByMultipartFile(talePage.getVoice());
+
+                /* 반환받은 url을 entity에 저장*/
+
+                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url);
+                pages.add(page);
+            }
+
+        }
+        tale.setPages(pages);
         tale.setTitle(taleRequestDTO.getTitle());
         tale.setCreateAt(new Date());
 
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         String memberCode = tokenProvider.getUserCode(accessToken);
-        System.out.println("memberCode = " + memberCode);
         tale.setMemberCode(memberCode);
-        System.out.println("[insertTaleService : Tale entity] \n" + tale);
-
-        /* 테일 */
-//        if (mongoDBTestRepository.findByName(name) != null) {
-//            log.info("[Service][update] name is already exist!!");
-//            mongoDBTestModel.setId(mongoDBTestRepository.findByName(name).getId());
-//        } else {
-//            log.info("[Service][insert] New name received!!");
-//        }
 
         taleRepository.save(tale);
+
+        System.out.println("tale = " + tale);
 
         return "성공";
     }
