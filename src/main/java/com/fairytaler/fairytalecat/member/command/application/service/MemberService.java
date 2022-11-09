@@ -38,7 +38,6 @@ public class MemberService {
             Member member = optionalMember.get();
             member.setMemberName(requestMemberInfoDTO.getMemberName());
             member.setNickname(requestMemberInfoDTO.getNickname());
-            member.setEmail(requestMemberInfoDTO.getEmail());
             member.setPhone(requestMemberInfoDTO.getPhone());
 
             memberInfoRepository.save(member);
