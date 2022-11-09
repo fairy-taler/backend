@@ -8,9 +8,13 @@ import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemberQueryService {
@@ -57,5 +61,19 @@ public class MemberQueryService {
         Member member = memberInfoRepository.findByMemberCode(memberCode);
 
         return member;
+    }
+
+    public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
+        Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
+        return member.getMemberId();
+    }
+
+    public List<Member> findAllMember(String accessToken) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            List<Member> members = memberInfoRepository.findAll();
+            return members;
+        }
+        return null;
     }
 }
