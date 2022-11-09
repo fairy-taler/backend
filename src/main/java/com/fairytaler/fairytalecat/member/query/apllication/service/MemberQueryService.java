@@ -8,6 +8,7 @@ import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,10 @@ public class MemberQueryService {
         Member member = memberInfoRepository.findByMemberCode(memberCode);
 
         return member;
+    }
+
+    public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
+        Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
+        return member.getMemberId();
     }
 }

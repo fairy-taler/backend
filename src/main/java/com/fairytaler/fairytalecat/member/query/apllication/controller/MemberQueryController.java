@@ -1,6 +1,7 @@
 package com.fairytaler.fairytalecat.member.query.apllication.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.service.MemberQueryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,8 @@ public class MemberQueryController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberQueryService.findAllInfo(accessToken)));
     }
 
+    @PostMapping("/search-id")
+    public ResponseEntity<ResponseDTO> searchId(@RequestBody RequestSearchIdDTO requestSearchIdDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 아이디 조회 성공", memberQueryService.searchId(requestSearchIdDTO)));
+    }
 }
