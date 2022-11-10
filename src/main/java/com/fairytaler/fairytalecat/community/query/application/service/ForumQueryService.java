@@ -12,6 +12,8 @@ import com.fairytaler.fairytalecat.member.domain.model.Member;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
 import com.fairytaler.fairytalecat.tale.domain.model.TTSTalePage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,13 +25,15 @@ public class ForumQueryService {
 
     static private ForumQueryDAO forumQueryDao;
     static private CommentQueryDAO commentQueryDAO;
-
     static private MemberInfoRepository memberInfoRepository;
 
-    public ForumQueryService(ForumQueryDAO forumQueryDao, CommentQueryDAO commentQueryDAO, MemberInfoRepository memberInfoRepository){
+    static private TokenProvider tokenProvider;
+    public ForumQueryService(ForumQueryDAO forumQueryDao, CommentQueryDAO commentQueryDAO, MemberInfoRepository memberInfoRepository,
+                             TokenProvider tokenProvider){
         this.forumQueryDao = forumQueryDao;
         this.commentQueryDAO = commentQueryDAO;
         this.memberInfoRepository = memberInfoRepository;
+        this.tokenProvider = tokenProvider;
     }
 
     public ForumResponseDTO getForum(Long forumCode){
@@ -67,5 +71,34 @@ public class ForumQueryService {
         }
         return commentDTOList;
     }
+    public Page<Forum> getForumListWidthPaging(Pageable pageable){
+        Page<Forum> forums = forumQueryDao.findAll(pageable);
+
+        if(forums == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 게시판이 없습니다.");
+        }
+        return forums;
+    }
+    public Page<Forum> getForumListByCategoryWidthPaging(String category, Pageable pageable){
+        Page<Forum> forums = forumQueryDao.findByCategory(category,pageable);
+
+        if(forums == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 게시판이 없습니다.");
+        }
+        return forums;
+    }
+    public Page<Forum> getForumListByMemberCodeWidthPaging(String accessToken, Pageable pageable){
+        String memberCode = tokenProvider.getUserCode(accessToken);
+        Page<Forum> forums = forumQueryDao.findByMemberCode(memberCode,pageable);
+
+        if(forums == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 게시판이 없습니다.");
+        }
+        return forums;
+    }
+
 
 }
