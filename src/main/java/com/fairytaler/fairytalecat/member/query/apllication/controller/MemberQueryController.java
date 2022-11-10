@@ -40,4 +40,9 @@ public class MemberQueryController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberQueryService.findProfile(accessToken)));
     }
 
+    @GetMapping("/profile/{memberId}")
+    public ResponseEntity<ResponseDTO> findProfileById(@PathVariable String memberId){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberQueryService.findProfileById(memberId)));
+    }
+
 }

@@ -91,4 +91,16 @@ public class MemberQueryService {
 
         return responseProfileDTO;
     }
+
+    public ResponseProfileDTO findProfileById(String memberId) {
+        ResponseProfileDTO responseProfileDTO = new ResponseProfileDTO();
+        Long memberCode = memberInfoRepository.findByMemberId(memberId).getMemberCode();
+        Profile profile = profileRepository.findByMemberCode(memberCode);
+        Member member = memberInfoRepository.findByMemberCode(memberCode);
+        responseProfileDTO.setProfile(profile);
+        responseProfileDTO.setMemberName(member.getMemberName());
+        responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
+
+        return responseProfileDTO;
+    }
 }
