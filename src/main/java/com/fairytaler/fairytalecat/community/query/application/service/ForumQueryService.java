@@ -9,6 +9,7 @@ import com.fairytaler.fairytalecat.community.query.application.dto.CommentRespon
 import com.fairytaler.fairytalecat.community.query.application.dto.ForumResponseDTO;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
 import com.fairytaler.fairytalecat.tale.domain.model.TTSTalePage;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,13 @@ public class ForumQueryService {
 
     static private ForumQueryDAO forumQueryDao;
     static private CommentQueryDAO commentQueryDAO;
-    static private MemberRepository memberRepository;
 
-    public ForumQueryService(ForumQueryDAO forumQueryDao, CommentQueryDAO commentQueryDAO, MemberRepository memberRepository){
+    static private MemberInfoRepository memberInfoRepository;
+
+    public ForumQueryService(ForumQueryDAO forumQueryDao, CommentQueryDAO commentQueryDAO, MemberInfoRepository memberInfoRepository){
         this.forumQueryDao = forumQueryDao;
         this.commentQueryDAO = commentQueryDAO;
-        this.memberRepository = memberRepository;
+        this.memberInfoRepository = memberInfoRepository;
     }
 
     public ForumResponseDTO getForum(Long forumCode){
@@ -58,8 +60,8 @@ public class ForumQueryService {
             commentResponseDTO.setContent(comment.getContent());
             commentResponseDTO.setCreateDate(comment.getCreateDate());
             /* 닉네임 검색해서 넣기 */
-            Optional<MemberInfo> oMember = memberInfoRepository.findByMemberCode(Long.parseLong(comment.getMemberCode()));
-            commentResponseDTO.setNickname();
+            Member member = memberInfoRepository.findByMemberCode(Long.parseLong(comment.getMemberCode()));
+            commentResponseDTO.setNickname(member.getNickname());
 
             commentDTOList.add(commentResponseDTO);
         }
