@@ -7,9 +7,13 @@ import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.command.application.dto.TokenDTO;
+import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -17,11 +21,13 @@ public class AuthService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final MemberInfoRepository memberInfoRepository;
 
-    public AuthService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
+    public AuthService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberInfoRepository memberInfoRepository) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.memberInfoRepository = memberInfoRepository;
     }
 
     @Transactional
@@ -60,4 +66,16 @@ public class AuthService {
         return token;
     }
 
+    @Transactional
+    public Object delete(String accessToken) {
+        Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
+        Optional<Member> optionalMember = Optional.of(memberInfoRepository.findByMemberCode(memberCode));
+
+        try {
+            Member member = memberInfoRepository.deleteMemberByMemberCode(memberCode);
+            return member;
+        } catch (Exception exception){
+            return null;
+        }
+    }
 }

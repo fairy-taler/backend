@@ -42,7 +42,10 @@ public class InsertAvatarService {
         avatar.setMemberCode(memberCode);
         avatar.setAnimal("0");
         avatar.setMaterial("0");
-        avatar.setObjectName("0");
+        String obj = "{ \"bag\": 8,\"fish\": 8,\"hat\": 8,\"glass\": 8}" ;
+        obj.replace("'", "''" );
+        avatar.setObjectName(obj);
+
         avatarRepository.save(avatar);
         return avatar;
     }

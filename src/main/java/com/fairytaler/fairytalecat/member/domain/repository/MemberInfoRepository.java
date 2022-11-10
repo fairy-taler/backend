@@ -8,4 +8,6 @@ public interface MemberInfoRepository extends JpaRepository<Member, String> {
     Member findByMemberCode(Long memberCode);
 
     Member findByMemberId(String memberId);
+
+    Member deleteMemberByMemberCode(Long memberCode);
 }
