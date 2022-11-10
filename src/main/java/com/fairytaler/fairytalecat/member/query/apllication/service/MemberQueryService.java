@@ -58,4 +58,16 @@ public class MemberQueryService {
 
         return member;
     }
+
+    public ResponseMemberDTO findMemberByMemberCode(String code) {
+        Long memberCode = Long.parseLong(code);
+        ResponseMemberDTO responseMember = new ResponseMemberDTO();
+        responseMember.setMember(memberRepository.findByMemberCode(memberCode));
+        if(avatarRepository.findByMemberCode(memberCode) == null){
+            responseMember.setAvatar(insertAvatarService.InitialAvatar(memberCode));
+        }else {
+            responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
+        }
+        return responseMember;
+    }
 }
