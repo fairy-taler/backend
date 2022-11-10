@@ -52,4 +52,6 @@ public class FaqController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 삭제 성공", faqService.deleteFaq(faqCode)));
     }
 
+
+
 }

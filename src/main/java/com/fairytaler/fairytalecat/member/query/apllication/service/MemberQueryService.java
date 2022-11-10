@@ -13,8 +13,13 @@ import com.fairytaler.fairytalecat.member.domain.repository.ProfileRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseProfileDTO;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemberQueryService {
@@ -67,16 +72,32 @@ public class MemberQueryService {
         return member;
     }
 
+
     public ResponseMemberDTO findMemberByMemberCode(String code) {
         Long memberCode = Long.parseLong(code);
         ResponseMemberDTO responseMember = new ResponseMemberDTO();
         responseMember.setMember(memberRepository.findByMemberCode(memberCode));
-        if(avatarRepository.findByMemberCode(memberCode) == null){
+        if (avatarRepository.findByMemberCode(memberCode) == null) {
             responseMember.setAvatar(insertAvatarService.InitialAvatar(memberCode));
-        }else {
+        } else {
             responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
         }
         return responseMember;
+    }
+
+    public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
+        Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
+        return member.getMemberId();
+    }
+
+    public List<Member> findAllMember(String accessToken) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            List<Member> members = memberInfoRepository.findAll();
+            return members;
+        }
+        return null;
+
     }
 
 

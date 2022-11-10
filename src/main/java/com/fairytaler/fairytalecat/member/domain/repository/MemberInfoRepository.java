@@ -10,4 +10,7 @@ public interface MemberInfoRepository extends JpaRepository<Member, String> {
     Member findByMemberId(String memberId);
 
     Member deleteMemberByMemberCode(Long memberCode);
+
+    Member findByMemberNameAndEmail(String memberName, String email);
+
 }

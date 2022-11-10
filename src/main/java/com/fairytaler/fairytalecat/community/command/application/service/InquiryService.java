@@ -33,7 +33,7 @@ public class InquiryService {
         inquiryDAO.save(inquiry);
 
         return inquiry;
-    }
+}
     public Inquiry insertInquiryAnswer(InquiryRequestDTO inquiryRequestDTO) {
 
         Optional<Inquiry> oInquiry = inquiryDAO.findById(inquiryRequestDTO.getInquiryCode());
