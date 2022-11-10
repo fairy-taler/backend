@@ -97,5 +97,12 @@ public class ForumService {
             return null;
         }
     }
-
+    public Long deleteComment(String accessToken, Long commentCode){
+        Optional<Comment> oComment = commentDAO.findById(commentCode);
+        if(oComment.isPresent()) {
+            commentDAO.delete(oComment.get());
+            return commentCode;
+        }
+        return null;
+    }
 }

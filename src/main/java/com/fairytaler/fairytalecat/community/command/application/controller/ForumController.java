@@ -56,14 +56,14 @@ public class ForumController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시글 댓글 성공", comment));
     }
     /* 댓글 삭제*/
-    @DeleteMapping("/faq/{faqCode}")
-    public ResponseEntity<ResponseDTO> privateNotice(@PathVariable Long faqCode){
-        Long result = faqService.deleteFaq(faqCode);
+    @DeleteMapping("/forums/comments/{commentCode}")
+    public ResponseEntity<ResponseDTO> deleteComment(@RequestHeader String accessToken,@PathVariable Long commentCode){
+        Long result = forumService.deleteComment(accessToken, commentCode);
         System.out.println(result);
         if(result == null){
-            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 삭제 실패", faqCode + "번 코드 FAQ가 존재하지 않습니다."));
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "댓글 삭제 실패", commentCode + "번 댓글이 존재하지 않습니다."));
         }
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 삭제 성공", faqService.deleteFaq(faqCode)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "댓글 삭제 성공", result));
     }
 
 }
