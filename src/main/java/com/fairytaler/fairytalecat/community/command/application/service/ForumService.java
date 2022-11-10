@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 import com.fairytaler.fairytalecat.community.command.application.dao.CommentDAO;
 import com.fairytaler.fairytalecat.community.command.application.dao.ForumDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.CommentRequestDTO;
+import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.ForumRequestDTO;
 import com.fairytaler.fairytalecat.community.command.domain.model.*;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
@@ -58,4 +59,43 @@ public class ForumService {
 
         return commentRequestDTO.getContent();
     }
+
+    public Forum updateForum(String accessToken, ForumRequestDTO forumRequestDTO){
+        Optional<Forum> oForum = forumDAO.findById(forumRequestDTO.getForumCode());
+
+        /* 데이터 삽입 */
+        try{
+            Forum forum = oForum.get();
+            if(tokenProvider.getUserCode(accessToken) != forum.getMemberCode()){
+                throw new Exception();
+            }
+            forum.setTitle(forumRequestDTO.getTitle());
+            forum.setContent(forumRequestDTO.getContent());
+
+            forumDAO.save(forum);
+            return forum;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
+    public Comment updateComment(String accessToken, CommentRequestDTO commentRequestDTO){
+        Optional<Comment> oComment = commentDAO.findById(commentRequestDTO.getCommentCode());
+
+        /* 데이터 삽입 */
+        try{
+            Comment comment = oComment.get();
+            if(tokenProvider.getUserCode(accessToken) != comment.getMemberCode()){
+                throw new Exception();
+            }
+            comment.setContent(commentRequestDTO.getContent());
+
+            commentDAO.save(comment);
+            return comment;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
+
 }

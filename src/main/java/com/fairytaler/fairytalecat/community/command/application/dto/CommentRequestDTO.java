@@ -11,6 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CommentRequestDTO {
+    private Long commentCode;
     private String content;
     private Long forumCode;
 

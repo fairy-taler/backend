@@ -10,6 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ForumRequestDTO {
+    private Long forumCode;
     private String title;
     private String content;
     private String category;
