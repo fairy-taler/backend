@@ -2,9 +2,7 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 
 import com.fairytaler.fairytalecat.community.command.application.dao.FaqDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
-import com.fairytaler.fairytalecat.community.command.application.dto.NoticeRequestDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
-import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
+import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

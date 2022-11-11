@@ -2,13 +2,10 @@ package com.fairytaler.fairytalecat.community.command.application.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.CommentRequestDTO;
-import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.ForumRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.service.ForumService;
-import com.fairytaler.fairytalecat.community.command.domain.model.Comment;
-import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
-import com.fairytaler.fairytalecat.community.command.domain.model.Forum;
-import com.fairytaler.fairytalecat.jwt.TokenProvider;
+import com.fairytaler.fairytalecat.community.domain.model.Comment;
+import com.fairytaler.fairytalecat.community.domain.model.Forum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +41,15 @@ public class ForumController {
     }
 
     /* 게시글 삭제 */
-
+    @DeleteMapping("/forums/{forumCode}")
+    public ResponseEntity<ResponseDTO> deleteForum(@RequestHeader String accessToken,@PathVariable Long forumCode){
+        Long result = forumService.deleteForum(accessToken, forumCode);
+        System.out.println(result);
+        if(result == null){
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시글 삭제 실패", forumCode + "번 게시글이 존재하지 않습니다."));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시글 삭제 성공", result));
+    }
     /* 댓글 수정 */
     @PutMapping("/forums/comments")
     public ResponseEntity<ResponseDTO> updateComment(@RequestHeader String accessToken, @RequestBody CommentRequestDTO commentRequestDTO){
@@ -65,5 +70,4 @@ public class ForumController {
         }
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "댓글 삭제 성공", result));
     }
-
 }

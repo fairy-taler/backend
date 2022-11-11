@@ -2,9 +2,7 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 
 import com.fairytaler.fairytalecat.community.command.application.dao.InquiryDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.InquiryRequestDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
-import com.fairytaler.fairytalecat.community.command.domain.model.Inquiry;
-import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
+import com.fairytaler.fairytalecat.community.domain.model.Inquiry;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.stereotype.Service;
 

@@ -74,6 +74,7 @@ public class MemberQueryService {
             responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
         }
         return responseMember;
+    }
 
     public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
         Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());

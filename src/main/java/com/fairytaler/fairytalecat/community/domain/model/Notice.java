@@ -1,48 +1,49 @@
-package com.fairytaler.fairytalecat.community.command.domain.model;
+package com.fairytaler.fairytalecat.community.domain.model;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @SequenceGenerator(
-        name = "SEQ_FAQ_CODE"
-        , sequenceName = "SEQ_FAQ_CODE"
+        name = "SEQ_NOTICE_CODE"
+        , sequenceName = "SEQ_NOTICE_CODE"
         , initialValue = 1
         , allocationSize = 1
 )
-@Table(name = "TB_FAQ")
-public class Faq {
+@Table(name = "TB_NOTICE")
+public class Notice {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE
-            , generator = "SEQ_FAQ_CODE"
+            , generator = "SEQ_NOTICE_CODE"
     )
-    @Column(name="FAQ_CODE")
-    private Long faqCode;
-
+    @Column(name="NOTICE_CODE")
+    private long noticeCode;           //내용
     @Column(name="TITLE")
-    private String title;
-
+    private String title;              //제목
     @Column(name="CONTENT")
-    private String content;
-
-    @Column(name="ANSWER")
-    private String answer;
-
+    private String content;            //내용
     @Column(name="CREATE_DATE")
-    private Date createDate;
-
+    private Date createDate;           //작성 일자
     @Column(name="IS_PUBLIC")
-    private boolean isPublic;
+    private boolean isPublic;          //비공개 여부
 
-    public Faq(){}
+    public Notice(){}
 
-    public Long getFaqCode() {
-        return faqCode;
+    public Notice(long noticeCode, String title, String content, Date createDate, boolean isPublic) {
+        this.noticeCode = noticeCode;
+        this.title = title;
+        this.content = content;
+        this.createDate = createDate;
+        this.isPublic = isPublic;
     }
 
-    public void setFaqCode(Long faqCode) {
-        this.faqCode = faqCode;
+    public long getNoticeCode() {
+        return noticeCode;
+    }
+
+    public void setNoticeCode(long noticeCode) {
+        this.noticeCode = noticeCode;
     }
 
     public String getTitle() {
@@ -59,14 +60,6 @@ public class Faq {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 
     public Date getCreateDate() {
@@ -87,11 +80,10 @@ public class Faq {
 
     @Override
     public String toString() {
-        return "Faq{" +
-                "faqCode=" + faqCode +
+        return "Notice{" +
+                "noticeCode=" + noticeCode +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", answer='" + answer + '\'' +
                 ", createDate=" + createDate +
                 ", isPublic=" + isPublic +
                 '}';

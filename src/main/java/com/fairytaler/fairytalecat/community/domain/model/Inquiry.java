@@ -1,4 +1,4 @@
-package com.fairytaler.fairytalecat.community.command.domain.model;
+package com.fairytaler.fairytalecat.community.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

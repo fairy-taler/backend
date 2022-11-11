@@ -1,6 +1,6 @@
 package com.fairytaler.fairytalecat.community.query.application.dao;
 
-import com.fairytaler.fairytalecat.community.command.domain.model.Forum;
+import com.fairytaler.fairytalecat.community.domain.model.Forum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
