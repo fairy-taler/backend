@@ -55,6 +55,7 @@ public class ForumService {
 
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         comment.setMemberCode(tokenProvider.getUserCode(accessToken));
+        System.out.println(comment.getMemberCode());
         commentDAO.save(comment);
 
         return commentRequestDTO.getContent();
