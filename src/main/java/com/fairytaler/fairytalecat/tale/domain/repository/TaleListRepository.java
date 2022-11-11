@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface TaleListRepository extends MongoRepository<TaleList, String>{
-
     List<TaleList> findByMemberCode(String memberCode);
 }
 

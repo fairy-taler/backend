@@ -51,6 +51,6 @@ public class TaleController {
 
     @PutMapping("/info")
     public ResponseEntity<ResponseDTO> updateTaleInfo(@RequestBody TaleInfoRequestDTO taleInfoRequestDTO) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 등록 성공", insertTaleService.updateTaleInfo(taleInfoRequestDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 수정 성공", insertTaleService.updateTaleInfo(taleInfoRequestDTO)));
     }
 }

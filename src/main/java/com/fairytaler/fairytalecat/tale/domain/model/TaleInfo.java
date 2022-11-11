@@ -1,26 +1,18 @@
 package com.fairytaler.fairytalecat.tale.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@Table(name= "TB_TAIL_INFO")
+@Table(name= "TB_TALE_INFO")
 public class TaleInfo {
 
-    @javax.persistence.Id
     @Id
     @Column(name="ID")
     private String id;              // 고유 번호
