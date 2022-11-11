@@ -26,9 +26,9 @@ public class ForumQueryController {
     /* 게시판 상세 조회 */
     @GetMapping("/forums/{forumCode}")
     public ResponseEntity<ResponseDTO> selectForum(@PathVariable Long forumCode){
-        System.out.println(forumCode);
+        System.out.println("forumController selectForum1 : " + forumCode);
         ForumResponseDTO forumResponseDTO = forumQueryService.getForum(forumCode);
-        System.out.println(forumResponseDTO);
+        System.out.println("forumController selectForum2 : " + forumResponseDTO);
         List<CommentResponseDTO> comments = forumQueryService.getCommentInForum(forumCode);
         if(comments == null){
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시판 조회 실패", null));
