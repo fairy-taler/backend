@@ -42,6 +42,23 @@ public class AwsS3InsertService {
         return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
 
+    public String uploadImage( InputStream inputStream) {
+
+//        validateFileExists(multipartFile); 파일이 비어있는지 확인
+        String fileName = UUID.randomUUID().toString().replace("-", "");
+
+//        String fileName = CommonUtils.buildFileName(category, multipartFile.getOriginalFilename());
+        /* 파일 메타 데이타 생성 */
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("image/jpeg");
+
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+
+        return amazonS3Client.getUrl(bucketName, fileName).toString();
+    }
+
     public String uploadFileByMultipartFile(MultipartFile multipartFile) {
 
 //        validateFileExists(multipartFile); 파일이 비어있는지 확인

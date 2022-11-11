@@ -76,6 +76,8 @@ public class MemberService {
     @Transactional
     public Profile updateProfile(String accessToken, RequestProfileDTO requestProfileDTO) {
 
+        System.out.println("requestProfileDTO.getProfileImg() = " + requestProfileDTO.getProfileImg());
+
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
 
         Profile optionalProfile = profileRepository.findByMemberCode(memberCode);
