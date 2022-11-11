@@ -6,12 +6,18 @@ import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
+
+import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.model.MemberPwd;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberPwdRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
+import com.fairytaler.fairytalecat.member.domain.repository.ProfileRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInfoDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestProfileDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestUpdatePwdDTO;
+import com.fairytaler.fairytalecat.tale.command.application.service.AwsS3InsertService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +31,21 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final MemberInfoRepository memberInfoRepository;
+    private final ProfileRepository profileRepository;
+    private final AwsS3InsertService awsS3InsertService;
+
     private final MemberPwdRepository memberPwdRepository;
 
-    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository, MemberPwdRepository memberPwdRepository) {
+    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository, ProfileRepository profileRepository, AwsS3InsertService awsS3InsertService, MemberPwdRepository memberPwdRepository) {
+
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.memberRepository = memberRepository;
         this.memberInfoRepository = memberInfoRepository;
+        this.profileRepository = profileRepository;
+        this.awsS3InsertService = awsS3InsertService;
+
         this.memberPwdRepository = memberPwdRepository;
     }
 
@@ -56,6 +69,25 @@ public class MemberService {
 
     }
 
+    public Profile updateProfile(String accessToken, RequestProfileDTO requestProfileDTO) {
+
+        Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
+
+        Profile optionalProfile = profileRepository.findByMemberCode(memberCode);
+
+        Profile profile = new Profile();
+        if (optionalProfile != null) {
+            profile = optionalProfile;
+        }
+
+        profile.setMemberCode(memberCode);
+        profile.setIntro(requestProfileDTO.getIntro());
+        String url = awsS3InsertService.uploadFileByMultipartFile(requestProfileDTO.getProfileImg());
+        profile.setImgUrl(url);
+        profileRepository.save(profile);
+        System.out.println("profile = " + profile);
+        return profile;
+    }
     public String updatePwd(String accessToken, RequestUpdatePwdDTO requestUpdatePwdDTO) {
         String memberId = tokenProvider.getUserId(accessToken);
         Optional<MemberDTO> member = memberMapper.findByMemberId(memberId);
