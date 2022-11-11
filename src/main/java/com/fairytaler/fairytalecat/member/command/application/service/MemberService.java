@@ -20,6 +20,7 @@ import com.fairytaler.fairytalecat.tale.command.application.service.AwsS3InsertS
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -49,13 +50,16 @@ public class MemberService {
         this.memberPwdRepository = memberPwdRepository;
     }
 
+    @Transactional
     public Member updateMemberInfo(String accessToken, RequestMemberInfoDTO requestMemberInfoDTO) {
 
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
         Optional<Member> optionalMember = Optional.of(memberInfoRepository.findByMemberCode(memberCode));
-
+        System.out.println("optionalMember = " + optionalMember.get());
         try{
             Member member = optionalMember.get();
+
+            member.setMemberCode(memberCode);
             member.setMemberName(requestMemberInfoDTO.getMemberName());
             member.setNickname(requestMemberInfoDTO.getNickname());
             member.setPhone(requestMemberInfoDTO.getPhone());
@@ -69,6 +73,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public Profile updateProfile(String accessToken, RequestProfileDTO requestProfileDTO) {
 
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
@@ -88,6 +93,8 @@ public class MemberService {
         System.out.println("profile = " + profile);
         return profile;
     }
+
+    @Transactional
     public String updatePwd(String accessToken, RequestUpdatePwdDTO requestUpdatePwdDTO) {
         String memberId = tokenProvider.getUserId(accessToken);
         Optional<MemberDTO> member = memberMapper.findByMemberId(memberId);
