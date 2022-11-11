@@ -46,6 +46,11 @@ public class TaleController {
 
     @PostMapping("/info")
     public ResponseEntity<ResponseDTO> insertTaleInfo(@RequestHeader String accessToken, @RequestBody TaleInfoRequestDTO taleInfoRequestDTO) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTaleInfo(accessToken,taleInfoRequestDTO)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 등록 성공", insertTaleService.insertTaleInfo(accessToken,taleInfoRequestDTO)));
+    }
+
+    @PutMapping("/info")
+    public ResponseEntity<ResponseDTO> updateTaleInfo(@RequestBody TaleInfoRequestDTO taleInfoRequestDTO) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 등록 성공", insertTaleService.updateTaleInfo(taleInfoRequestDTO)));
     }
 }

@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
+import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.mongoTest.model.MongoDBTestModel;
 import com.fairytaler.fairytalecat.mongoTest.service.AwsS3Service;
@@ -201,7 +202,7 @@ public class InsertTaleService {
         taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
         taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
         taleInfo.setSticker(taleInfoRequestDTO.getSticker());
-        taleInfo.setStickerPosition(taleInfo.getStickerPosition());
+        taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
 
         InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
         String url = awsS3InsertService.uploadImage(inputStream);
@@ -211,5 +212,33 @@ public class InsertTaleService {
         taleInfoRepository.save(taleInfo);
 
         return taleInfo;
+    }
+
+    public TaleInfo updateTaleInfo(TaleInfoRequestDTO taleInfoRequestDTO) {
+
+        Optional<TaleInfo> optionalTaleInfo = taleInfoRepository.findById(taleInfoRequestDTO.getId());
+        try{
+            TaleInfo taleInfo = optionalTaleInfo.get();
+
+            taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
+            taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
+            taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+            taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
+            taleInfo.setSticker(taleInfoRequestDTO.getSticker());
+            taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
+
+            InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
+            String url = awsS3InsertService.uploadImage(inputStream);
+
+            taleInfo.setThumbNail(url);
+
+            taleInfoRepository.save(taleInfo);
+
+            return taleInfo;
+        }
+        catch (Exception exception){
+            return null;
+        }
+
     }
 }

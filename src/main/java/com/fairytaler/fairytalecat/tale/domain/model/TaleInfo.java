@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name= "TB_TAIL_INFO")
 public class TaleInfo {
 
