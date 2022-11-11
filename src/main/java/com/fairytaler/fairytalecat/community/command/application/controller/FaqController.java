@@ -2,9 +2,8 @@ package com.fairytaler.fairytalecat.community.command.application.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
-import com.fairytaler.fairytalecat.community.command.application.dto.NoticeRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.service.FaqService;
-import com.fairytaler.fairytalecat.community.command.domain.model.Faq;
+import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

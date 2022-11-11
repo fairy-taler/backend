@@ -3,9 +3,9 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 import com.fairytaler.fairytalecat.community.command.application.dao.CommentDAO;
 import com.fairytaler.fairytalecat.community.command.application.dao.ForumDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.CommentRequestDTO;
-import com.fairytaler.fairytalecat.community.command.application.dto.FaqRequestDTO;
 import com.fairytaler.fairytalecat.community.command.application.dto.ForumRequestDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.*;
+import com.fairytaler.fairytalecat.community.domain.model.Comment;
+import com.fairytaler.fairytalecat.community.domain.model.Forum;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +103,21 @@ public class ForumService {
             commentDAO.delete(oComment.get());
             return commentCode;
         }
+        return null;
+    }
+    public Long deleteForum(String accessToken, Long forumCode){
+
+        List<Comment> commentList = commentDAO.findByForumCode(forumCode);
+        for(Comment comment : commentList){
+            commentDAO.delete(comment);
+        }
+        /* 게시글 삭제 */
+        Optional<Forum> oForum = forumDAO.findById(forumCode);
+        if(oForum.isPresent()) {
+            forumDAO.delete(oForum.get());
+            return forumCode;
+        }
+
         return null;
     }
 }

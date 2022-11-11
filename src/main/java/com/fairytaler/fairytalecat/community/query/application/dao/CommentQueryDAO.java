@@ -1,6 +1,6 @@
 package com.fairytaler.fairytalecat.community.query.application.dao;
 
-import com.fairytaler.fairytalecat.community.command.domain.model.Comment;
+import com.fairytaler.fairytalecat.community.domain.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
