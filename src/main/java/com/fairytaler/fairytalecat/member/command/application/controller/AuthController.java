@@ -3,12 +3,10 @@ package com.fairytaler.fairytalecat.member.command.application.controller;
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.command.application.service.AuthService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -32,4 +30,8 @@ public class AuthController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "로그인 성공", authService.login(memberDTO)));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO> login(@RequestHeader String accessToken){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 탈퇴 성공", authService.delete(accessToken)));
+    }
 }

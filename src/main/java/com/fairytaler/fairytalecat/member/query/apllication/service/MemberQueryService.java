@@ -6,8 +6,13 @@ import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
+import com.fairytaler.fairytalecat.member.domain.repository.ProfileRepository;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseProfileDTO;
+import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
 import org.springframework.security.core.Authentication;
@@ -26,8 +31,10 @@ public class MemberQueryService {
     private final AvatarRepository avatarRepository;
     private final MemberInfoRepository memberInfoRepository;
     private final InsertAvatarService insertAvatarService;
+    private final ProfileRepository profileRepository;
+    private final TaleRepository taleRepository;
 
-    public MemberQueryService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository, InsertAvatarService insertAvatarService) {
+    public MemberQueryService(MemberMapper memberMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, MemberRepository memberRepository, AvatarRepository avatarRepository, MemberInfoRepository memberInfoRepository, InsertAvatarService insertAvatarService, ProfileRepository profileRepository, TaleRepository taleRepository) {
         this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
@@ -35,6 +42,8 @@ public class MemberQueryService {
         this.avatarRepository = avatarRepository;
         this.memberInfoRepository = memberInfoRepository;
         this.insertAvatarService = insertAvatarService;
+        this.profileRepository = profileRepository;
+        this.taleRepository = taleRepository;
     }
 
     public MemberDTO findMemberById(String accessToken) {
@@ -68,12 +77,13 @@ public class MemberQueryService {
         Long memberCode = Long.parseLong(code);
         ResponseMemberDTO responseMember = new ResponseMemberDTO();
         responseMember.setMember(memberRepository.findByMemberCode(memberCode));
-        if(avatarRepository.findByMemberCode(memberCode) == null){
+        if (avatarRepository.findByMemberCode(memberCode) == null) {
             responseMember.setAvatar(insertAvatarService.InitialAvatar(memberCode));
-        }else {
+        } else {
             responseMember.setAvatar(avatarRepository.findByMemberCode(memberCode));
         }
         return responseMember;
+    }
 
     public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
         Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
@@ -88,5 +98,30 @@ public class MemberQueryService {
         }
         return null;
 
+    }
+
+
+    public ResponseProfileDTO findProfile(String accessToken) {
+        Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
+        ResponseProfileDTO responseProfileDTO = new ResponseProfileDTO();
+        Profile profile = profileRepository.findByMemberCode(memberCode);
+        Member member = memberInfoRepository.findByMemberCode(memberCode);
+        responseProfileDTO.setProfile(profile);
+        responseProfileDTO.setMemberName(member.getMemberName());
+        responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
+
+        return responseProfileDTO;
+    }
+
+    public ResponseProfileDTO findProfileById(String memberId) {
+        ResponseProfileDTO responseProfileDTO = new ResponseProfileDTO();
+        Long memberCode = memberInfoRepository.findByMemberId(memberId).getMemberCode();
+        Profile profile = profileRepository.findByMemberCode(memberCode);
+        Member member = memberInfoRepository.findByMemberCode(memberCode);
+        responseProfileDTO.setProfile(profile);
+        responseProfileDTO.setMemberName(member.getMemberName());
+        responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
+
+        return responseProfileDTO;
     }
 }
