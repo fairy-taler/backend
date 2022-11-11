@@ -2,8 +2,7 @@ package com.fairytaler.fairytalecat.community.command.application.service;
 
 import com.fairytaler.fairytalecat.community.command.application.dao.NoticeDAO;
 import com.fairytaler.fairytalecat.community.command.application.dto.NoticeRequestDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.Notice;
-import com.fairytaler.fairytalecat.community.query.application.dao.NoticeQueryDAO;
+import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

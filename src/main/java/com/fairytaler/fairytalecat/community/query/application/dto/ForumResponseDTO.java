@@ -1,12 +1,11 @@
 package com.fairytaler.fairytalecat.community.query.application.dto;
 
-import com.fairytaler.fairytalecat.community.command.application.dto.ForumRequestDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,9 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class ForumResponseDTO{
     private Long forumCode;
+    private String nickname;
     private String memberCode;
     private String title;
     private String content;
+    private Date createDate;
+    private String category;
 
     private List<CommentResponseDTO> comments;
 

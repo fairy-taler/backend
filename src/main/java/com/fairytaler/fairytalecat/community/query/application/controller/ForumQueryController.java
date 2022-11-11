@@ -1,11 +1,9 @@
 package com.fairytaler.fairytalecat.community.query.application.controller;
 
 import com.fairytaler.fairytalecat.common.response.ResponseDTO;
-import com.fairytaler.fairytalecat.community.command.domain.model.Comment;
 import com.fairytaler.fairytalecat.community.query.application.dto.CommentResponseDTO;
 import com.fairytaler.fairytalecat.community.query.application.dto.ForumResponseDTO;
 import com.fairytaler.fairytalecat.community.query.application.service.ForumQueryService;
-import com.fairytaler.fairytalecat.community.query.application.service.InquiryQueryService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +41,7 @@ public class ForumQueryController {
     /* 게시판 전체 조회 */
     @GetMapping("/forums")
     public ResponseEntity<ResponseDTO> selectForumListWithPaging(Pageable pageable){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService. getForumListWidthPaging(pageable)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService. getForumListWidthPaging2(pageable)));
     }
     /* 카테고리 별 게시글 조회 */
     @GetMapping("/forums/category")
