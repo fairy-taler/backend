@@ -5,16 +5,20 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
+import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.mongoTest.model.MongoDBTestModel;
 import com.fairytaler.fairytalecat.mongoTest.service.AwsS3Service;
 import com.fairytaler.fairytalecat.tale.domain.model.TTSTalePage;
 import com.fairytaler.fairytalecat.tale.domain.model.Tale;
+import com.fairytaler.fairytalecat.tale.domain.model.TaleInfo;
 import com.fairytaler.fairytalecat.tale.domain.model.TalePage;
+import com.fairytaler.fairytalecat.tale.domain.repository.TaleInfoRepository;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,12 +39,14 @@ public class InsertTaleService {
     static private TaleRepository taleRepository;
     private TTSService ttsService;
     private AwsS3InsertService awsS3InsertService;
+    private TaleInfoRepository taleInfoRepository;
 
-    public InsertTaleService (TokenProvider tokenProvider, TaleRepository taleRepository, TTSService ttsService, AwsS3InsertService awsS3InsertService) {
+
+    public InsertTaleService(TokenProvider tokenProvider, TTSService ttsService, AwsS3InsertService awsS3InsertService, TaleInfoRepository taleInfoRepository) {
         this.tokenProvider = tokenProvider;
-        this.taleRepository = taleRepository;
         this.ttsService = ttsService;
         this.awsS3InsertService = awsS3InsertService;
+        this.taleInfoRepository = taleInfoRepository;
     }
 
     public Object insertTale(String accessToken, TaleRequestDTO taleRequestDTO) {
@@ -183,5 +189,56 @@ public class InsertTaleService {
         System.out.println("tale = " + tale);
 
         return "성공";
+    }
+
+    @Transactional
+    public TaleInfo insertTaleInfo(String accessToken, TaleInfoRequestDTO taleInfoRequestDTO) {
+
+        TaleInfo taleInfo = new TaleInfo();
+
+        taleInfo.setId(taleInfoRequestDTO.getId());
+        taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
+        taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
+        taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+        taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
+        taleInfo.setSticker(taleInfoRequestDTO.getSticker());
+        taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
+
+        InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
+        String url = awsS3InsertService.uploadImage(inputStream);
+
+        taleInfo.setThumbNail(url);
+
+        taleInfoRepository.save(taleInfo);
+
+        return taleInfo;
+    }
+
+    public TaleInfo updateTaleInfo(TaleInfoRequestDTO taleInfoRequestDTO) {
+
+        Optional<TaleInfo> optionalTaleInfo = taleInfoRepository.findById(taleInfoRequestDTO.getId());
+        try{
+            TaleInfo taleInfo = optionalTaleInfo.get();
+
+            taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
+            taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
+            taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+            taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
+            taleInfo.setSticker(taleInfoRequestDTO.getSticker());
+            taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
+
+            InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
+            String url = awsS3InsertService.uploadImage(inputStream);
+
+            taleInfo.setThumbNail(url);
+
+            taleInfoRepository.save(taleInfo);
+
+            return taleInfo;
+        }
+        catch (Exception exception){
+            return null;
+        }
+
     }
 }

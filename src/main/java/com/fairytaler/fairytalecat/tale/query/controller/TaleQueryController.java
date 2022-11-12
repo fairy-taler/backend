@@ -29,7 +29,7 @@ public class TaleQueryController {
     }
 
     @GetMapping("/mylist")
-    public ResponseEntity<ResponseDTO> searchTaleBymemberId(@RequestHeader String accessToken) {
+    public ResponseEntity<ResponseDTO> searchTaleByMemberId(@RequestHeader String accessToken) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
     }
 
