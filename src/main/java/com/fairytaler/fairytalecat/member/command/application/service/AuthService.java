@@ -66,7 +66,6 @@ public class AuthService {
         return token;
     }
 
-    @Transactional
     public Object delete(String accessToken) {
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
         Optional<Member> optionalMember = Optional.of(memberInfoRepository.findByMemberCode(memberCode));
