@@ -18,7 +18,7 @@ public class Tale {
     private String id;              // 고유 번호
     private String memberCode;      // 작성자 코드
     private String title;           // 제목
-    private Date createAt;        // 생성 날짜
+    private Date createAt;         // 표지 이미지
     private List<TalePage> pages;   // 페이지
 
     public Tale(){}

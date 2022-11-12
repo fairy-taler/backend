@@ -22,27 +22,27 @@ public class TaleController {
     private final TaleRepository taleRepository;
     private final InsertTaleService insertTaleService;
 
-
     public TaleController(TaleRepository taleRepository, InsertTaleService insertTaleService) {
         this.taleRepository = taleRepository;
         this.insertTaleService = insertTaleService;
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @ModelAttribute TaleRequestDTO taleRequestDTO) {
+    public ResponseEntity<ResponseDTO> insertTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
+        System.out.println(taleRequestDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
     }
 
-    @PostMapping("/tts")
-    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTTSTale(accessToken,taleTTSRequestDTO)));
-    }
-
-    @PostMapping("/voice")
-    public ResponseEntity<ResponseDTO> insertTaleVocie(@RequestHeader String accessToken, @ModelAttribute TaleVoiceRequestDTO taleVoiceRequestDTO) {
-        System.out.println(taleVoiceRequestDTO);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTaleVoice(accessToken,taleVoiceRequestDTO)));
-    }
+//    @PostMapping("/tts")
+//    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTTSTale(accessToken,taleTTSRequestDTO)));
+//    }
+//
+//    @PostMapping("/voice")
+//    public ResponseEntity<ResponseDTO> insertTaleVocie(@RequestHeader String accessToken, @ModelAttribute TaleVoiceRequestDTO taleVoiceRequestDTO) {
+//        System.out.println(taleVoiceRequestDTO);
+//        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTaleVoice(accessToken,taleVoiceRequestDTO)));
+//    }
 
     @PostMapping("/info")
     public ResponseEntity<ResponseDTO> insertTaleInfo(@RequestHeader String accessToken, @RequestBody TaleInfoRequestDTO taleInfoRequestDTO) {
