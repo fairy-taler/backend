@@ -19,5 +19,6 @@ public class TalePage {
 
     private String audioUrl;
 
+    private byte[] rawImg;          // 페이지 별 로우 이미지
     public TalePage(){}
 }
