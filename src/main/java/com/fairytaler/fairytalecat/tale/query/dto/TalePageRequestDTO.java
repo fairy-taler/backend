@@ -20,7 +20,9 @@ public class TalePageRequestDTO {
 
     private String ttsText;
 
-    public MultipartFile voice;
+    private byte[] rawImg;
+
+    public byte[] voice;
 
     public TalePageRequestDTO(){}
 }
