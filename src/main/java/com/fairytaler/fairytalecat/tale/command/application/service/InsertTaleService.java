@@ -42,11 +42,12 @@ public class InsertTaleService {
     private TaleInfoRepository taleInfoRepository;
 
 
-    public InsertTaleService(TokenProvider tokenProvider, TTSService ttsService, AwsS3InsertService awsS3InsertService, TaleInfoRepository taleInfoRepository) {
+    public InsertTaleService(TokenProvider tokenProvider, TTSService ttsService, AwsS3InsertService awsS3InsertService, TaleInfoRepository taleInfoRepository, TaleRepository taleRepository) {
         this.tokenProvider = tokenProvider;
         this.ttsService = ttsService;
         this.awsS3InsertService = awsS3InsertService;
         this.taleInfoRepository = taleInfoRepository;
+        this.taleRepository = taleRepository;
     }
 
     public Object insertTale(String accessToken, TaleRequestDTO taleRequestDTO) {
@@ -70,7 +71,9 @@ public class InsertTaleService {
 
                 String url = awsS3InsertService.uploadFile(inputStream);
 
-                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, talePage.getRawImg());
+                InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
+                String url2 = awsS3InsertService.uploadImage(inputStream2);
+                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, url2);
                 pages.add(page);
             }
             /* 음성 파일이 들어온다면 */
@@ -79,7 +82,10 @@ public class InsertTaleService {
 
                 String url = awsS3InsertService.uploadFile(inputStream);
 
-                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, talePage.getRawImg());
+                InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
+                String url2 = awsS3InsertService.uploadImage(inputStream2);
+
+                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url,  url2);
                 pages.add(page);
             }
         }
@@ -91,7 +97,7 @@ public class InsertTaleService {
         /* 사용자 정보 (작성자) 가져와서 넣기 */
         String memberCode = tokenProvider.getUserCode(accessToken);
         tale.setMemberCode(memberCode);
-
+        System.out.println(tale);
         taleRepository.save(tale);
 
         System.out.println("tale = " + tale);
@@ -166,7 +172,6 @@ public class InsertTaleService {
 //            TalePage page = new TalePage(ttsTalePage.getPage(), ttsTalePage.getData(), url);
 //            pages.add(page);
 //        }
-<<<<<<< HEAD
 //        tale.setPages(pages);
 //        tale.setTitle(taleTTSRequestDTO.getTitle());
 //        tale.setCreateAt(new Date());
@@ -191,14 +196,6 @@ public class InsertTaleService {
 //
 //        return "성공";
 //    }
-=======
-
-        taleRepository.save(tale);
-
-        System.out.println("tale = " + tale);
-
-        return "성공";
-    }
 
     @Transactional
     public TaleInfo insertTaleInfo(String accessToken, TaleInfoRequestDTO taleInfoRequestDTO) {
@@ -250,5 +247,4 @@ public class InsertTaleService {
         }
 
     }
->>>>>>> 9c09e4cda5b944be07cba79ab07f424ecbf34e02
 }
