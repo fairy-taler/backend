@@ -41,7 +41,6 @@ public class InsertTaleService {
     private AwsS3InsertService awsS3InsertService;
     private TaleInfoRepository taleInfoRepository;
 
-
     public InsertTaleService(TokenProvider tokenProvider, TTSService ttsService, AwsS3InsertService awsS3InsertService, TaleInfoRepository taleInfoRepository, TaleRepository taleRepository) {
         this.tokenProvider = tokenProvider;
         this.ttsService = ttsService;
