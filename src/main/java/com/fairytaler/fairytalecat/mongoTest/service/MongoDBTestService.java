@@ -49,6 +49,4 @@ public class MongoDBTestService {
         mongoDBTestRepository.save(mongoDBTestModel);
     }
 
-
-
 }

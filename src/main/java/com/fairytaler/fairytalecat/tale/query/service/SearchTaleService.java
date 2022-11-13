@@ -8,6 +8,7 @@ import com.fairytaler.fairytalecat.tale.domain.repository.TaleInfoRepository;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleListRepository;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleInfoRequestDTO;
+import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,9 @@ public class SearchTaleService {
                     System.out.println("taleList.getId() = " + taleList.getId());
                     System.out.println("taleInfoRepository.findById(taleList.getId()).get() = " + taleInfoRepository.findTaleInfoById(taleList.getId()));
                     if(taleInfoRepository.findTaleInfoById(taleList.getId()) == null){
-                        TaleInfo taleInfo = new TaleInfo(taleList.getId(),null,null,null,null,null,null,null,null,null,null);
+                        //TaleInfo taleInfo = new TaleInfo(taleList.getId()," "," "," "," "," "," "," "," "," "," ");
+                        TaleInfoRequestDTO taleInfoRequestDTO =new TaleInfoRequestDTO(taleList.getId()," "," "," "," "," "," "," "," "," ", new byte[0]);
+                        TaleInfo taleInfo = insertTaleService.insertTaleInfo(accessToken, taleInfoRequestDTO);
                         taleResponseDTO = new TaleResponseDTO(taleList, taleInfo);
                     }else{
                         taleResponseDTO = new TaleResponseDTO(taleList, taleInfoRepository.findTaleInfoById(taleList.getId()));
