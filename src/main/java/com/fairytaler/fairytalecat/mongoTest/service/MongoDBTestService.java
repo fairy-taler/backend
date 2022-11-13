@@ -49,51 +49,6 @@ public class MongoDBTestService {
         mongoDBTestRepository.save(mongoDBTestModel);
     }
 
-    @Test
-    public void test1 () throws IOException {
 
-        File f = new File("C:\\Users\\HP\\Desktop\\1667806900099.mp3");
-        byte[] file = new byte[(int) f.length()];
 
-        try (
-                FileInputStream fis = new FileInputStream(f);
-                DataInputStream dis = new DataInputStream(fis)
-        ) {
-            dis.readFully(file);
-
-            FileOutputStream outputStream = new FileOutputStream("file.txt");
-            outputStream.write(file);
-
-            outputStream.close();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("byte[] length by Vanilla Java: " + file.length);
-        System.out.println("Content : " + new String(file));
-
-    }
-    @Test
-    public void test2 () throws IOException {
-
-        File f = new File("C:\\Users\\HP\\Desktop\\1667806900099.mp3");
-        byte[] file = new byte[(int) f.length()];
-
-        try (
-                FileInputStream fis = new FileInputStream(f);
-                DataInputStream dis = new DataInputStream(fis)
-        ) {
-            dis.readFully(file);
-
-            FileOutputStream outputStream = new FileOutputStream("file.txt");
-            outputStream.write(file);
-
-            outputStream.close();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("byte[] length by Vanilla Java: " + file.length);
-        System.out.println("Content : " + new String(file));
-    }
 }
