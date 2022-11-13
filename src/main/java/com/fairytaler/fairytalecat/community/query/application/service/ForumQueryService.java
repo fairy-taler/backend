@@ -52,13 +52,16 @@ public class ForumQueryService {
         /* 닉네임 조회 */
         String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
         forumResponseDTO.setNickname(nickname);
+        /* 회원 아이디 조회 */
+        String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
+        forumResponseDTO.setMemberId(memberId);
 
         return forumResponseDTO;
 }
     public List<CommentResponseDTO> getCommentInForum(Long forumCode){
         List<Comment> comments = commentQueryDAO.findByForumCode(forumCode);
         List<CommentResponseDTO> commentDTOList = new ArrayList<>();
-        
+
         for(Comment comment : comments){
             CommentResponseDTO commentResponseDTO = new CommentResponseDTO();
             commentResponseDTO.setContent(comment.getContent());
@@ -112,12 +115,18 @@ public class ForumQueryService {
             forumResponseDTO.setCreateDate(forum.getCreateDate());
             forumResponseDTO.setCategory(forum.getCategory());
             forumResponseDTO.setForumCode(forum.getForumCode());
+            forumResponseDTO.setMemberCode(forum.getMemberCode());
 
             /* 닉네임 가져오기 */
             String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
             forumResponseDTO.setNickname(nickname);
             forumResponseDTOList.add(forumResponseDTO);
-            System.out.println(forumResponseDTO);
+
+            /* 회원 아이디 조회 */
+            String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
+            forumResponseDTO.setMemberId(memberId);
+
+
         }
         /* 페이지 네이션에 데이터 셋팅*/
         Pagenation<ForumResponseDTO> pages = new Pagenation<ForumResponseDTO>();
@@ -153,6 +162,9 @@ public class ForumQueryService {
             forumResponseDTO.setNickname(nickname);
             forumResponseDTOList.add(forumResponseDTO);
             System.out.println(forumResponseDTO);
+            /* 회원 아이디 조회 */
+            String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
+            forumResponseDTO.setMemberId(memberId);
         }
         /* 페이지 네이션에 데이터 셋팅*/
         Pagenation<ForumResponseDTO> pages = new Pagenation<ForumResponseDTO>();
@@ -187,6 +199,10 @@ public class ForumQueryService {
             forumResponseDTO.setNickname(nickname);
             forumResponseDTOList.add(forumResponseDTO);
             System.out.println(forumResponseDTO);
+
+            /* 회원 아이디 조회 */
+            String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
+            forumResponseDTO.setMemberId(memberId);
         }
         /* 페이지 네이션에 데이터 셋팅*/
         Pagenation<ForumResponseDTO> pages = new Pagenation<ForumResponseDTO>();
