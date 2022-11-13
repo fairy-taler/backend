@@ -17,8 +17,11 @@ public class TaleInfoRequestDTO {
     private String fontStyle;
     private String fontSize;
     private String fontColor;
+    private String fontPositionX;
+    private String fontPositionY;
     private String coverColor;
     private String sticker;
-    private String stickerPosition;
+    private String stickerPositionX;
+    private String stickerPositionY;
     private byte[] inputImg;
 }

@@ -26,14 +26,23 @@ public class TaleInfo {
     @Column(name="FONT_COLOR")
     private String fontColor;
 
+    @Column(name="FONT_POSITION_X")
+    private String fontPositionX;
+
+    @Column(name="FONT_POSITION_Y")
+    private String fontPositionY;
+
     @Column(name="COVER_COLOR")
     private String coverColor;
 
     @Column(name="STICKER")
     private String sticker;
 
-    @Column(name="STICKER_POSITION")
-    private String stickerPosition;
+    @Column(name="STICKER_POSITION_X")
+    private String stickerPositionX;
+
+    @Column(name="STICKER_POSITION_Y")
+    private String stickerPositionY;
 
     @Column(name="THUMB_NAIL")
     private String thumbNail;

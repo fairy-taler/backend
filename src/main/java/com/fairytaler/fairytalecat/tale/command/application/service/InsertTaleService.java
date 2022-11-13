@@ -206,9 +206,12 @@ public class InsertTaleService {
         taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
         taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
         taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+        taleInfo.setFontPositionX(taleInfoRequestDTO.getFontPositionX());
+        taleInfo.setFontPositionY(taleInfoRequestDTO.getFontPositionY());
         taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
         taleInfo.setSticker(taleInfoRequestDTO.getSticker());
-        taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
+        taleInfo.setStickerPositionX(taleInfoRequestDTO.getStickerPositionX());
+        taleInfo.setStickerPositionY(taleInfoRequestDTO.getStickerPositionY());
 
         InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
         String url = awsS3InsertService.uploadImage(inputStream);
@@ -229,9 +232,12 @@ public class InsertTaleService {
             taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
             taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
             taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+            taleInfo.setFontPositionX(taleInfoRequestDTO.getFontPositionX());
+            taleInfo.setFontPositionY(taleInfoRequestDTO.getFontPositionY());
             taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
             taleInfo.setSticker(taleInfoRequestDTO.getSticker());
-            taleInfo.setStickerPosition(taleInfoRequestDTO.getStickerPosition());
+            taleInfo.setStickerPositionX(taleInfoRequestDTO.getStickerPositionX());
+            taleInfo.setStickerPositionY(taleInfoRequestDTO.getStickerPositionY());
 
             InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
             String url = awsS3InsertService.uploadImage(inputStream);
