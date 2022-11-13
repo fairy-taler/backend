@@ -64,7 +64,7 @@ public class InsertTaleService {
 
         for(TalePageRequestDTO talePage : taleRequestDTO.getPages()){
             /* ttsText에 값이 들어온다면 */
-            if(!talePage.getTtsText().toString().equals("")){
+            if(!(talePage.getTtsText() == "")){
                 byte[] bytes = ttsService.ResponseTTS(talePage.getTtsText());
 
                 InputStream inputStream = new ByteArrayInputStream(bytes);
@@ -77,7 +77,8 @@ public class InsertTaleService {
                 pages.add(page);
             }
             /* 음성 파일이 들어온다면 */
-            if(!talePage.getVoice().toString().equals("")){
+            else if(! (talePage.getVoice().toString() == "")){
+                System.out.println("[voice] : " + talePage.getVoice().toString());
                 InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
 
                 String url = awsS3InsertService.uploadFile(inputStream);
