@@ -1,8 +1,8 @@
 package com.fairytaler.fairytalecat.tale.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import net.bytebuddy.asm.Advice;
+import net.bytebuddy.implementation.bind.annotation.Argument;
 
 import javax.persistence.*;
 
@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 @Table(name= "TB_TALE_INFO")
 public class TaleInfo {
 
@@ -47,4 +48,17 @@ public class TaleInfo {
     @Column(name="THUMB_NAIL")
     private String thumbNail;
 
+    public TaleInfo(String id, String fontStyle, String fontSize, String fontColor, String fontPositionX, String fontPositionY, String coverColor, String sticker, String stickerPositionX, String stickerPositionY, String thumbNail) {
+        this.id = id;
+        this.fontStyle = fontStyle;
+        this.fontSize = fontSize;
+        this.fontColor = fontColor;
+        this.fontPositionX = fontPositionX;
+        this.fontPositionY = fontPositionY;
+        this.coverColor = coverColor;
+        this.sticker = sticker;
+        this.stickerPositionX = stickerPositionX;
+        this.stickerPositionY = stickerPositionY;
+        this.thumbNail = thumbNail;
+    }
 }
