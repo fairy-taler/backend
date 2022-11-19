@@ -32,6 +32,11 @@ public class TaleController {
         System.out.println(taleRequestDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
     }
+    @PutMapping("")
+    public ResponseEntity<ResponseDTO> updateTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
+        System.out.println(taleRequestDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.updateTale(accessToken,taleRequestDTO)));
+    }
 
 //    @PostMapping("/tts")
 //    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {

@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class TaleRequestDTO {
+    private String id;
     private String title;
     private List<TalePageRequestDTO> pages;
     public TaleRequestDTO() {}
