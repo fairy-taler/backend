@@ -4,6 +4,7 @@ import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.tale.command.application.service.InsertTaleService;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.service.SearchTaleService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,13 @@ public class TaleQueryController {
     public ResponseEntity<ResponseDTO> searchTaleByMemberId(@RequestHeader String accessToken) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
     }
+    @GetMapping("")
+    public ResponseEntity<ResponseDTO> selectTale(@RequestHeader String accessToken, Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 전체 조회 성공", searchTaleService.getTaleListWithPaging(pageable)));
+    }
 
+    @GetMapping("/title")
+    public ResponseEntity<ResponseDTO> selectTaleByTitle(@RequestHeader String accessToken, String title, Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 제목으로 검색 성공", searchTaleService.searchTaleByTitle(title,pageable)));
+    }
 }
