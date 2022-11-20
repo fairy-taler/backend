@@ -32,6 +32,19 @@ public class TaleController {
         System.out.println(taleRequestDTO);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTale(accessToken,taleRequestDTO)));
     }
+    @PutMapping("")
+    public ResponseEntity<ResponseDTO> updateTale(@RequestHeader String accessToken, @RequestBody TaleRequestDTO taleRequestDTO) {
+        System.out.println(taleRequestDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.updateTale(accessToken,taleRequestDTO)));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) {
+        String deleteId =  insertTaleService.deleteTaleByTaleCode(id);
+        if(deleteId == null){
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 삭제 실패", id + ": 동화가 없습니다."));
+        }
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 삭제 성공", deleteId));
+    }
 
 //    @PostMapping("/tts")
 //    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {

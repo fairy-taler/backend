@@ -5,7 +5,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
+import com.fairytaler.fairytalecat.community.domain.model.Comment;
 import com.fairytaler.fairytalecat.community.domain.model.Faq;
+import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.mongoTest.model.MongoDBTestModel;
 import com.fairytaler.fairytalecat.mongoTest.service.AwsS3Service;
@@ -57,37 +59,31 @@ public class InsertTaleService {
         Tale tale = new Tale();
 
         /* 동화 데이터 엔티티에 넣기 */
-        // tale.setPages(TaleTTSRequestDTO.getPages());
-
         List<TalePage> pages = new LinkedList<>();
 
         for(TalePageRequestDTO talePage : taleRequestDTO.getPages()){
+            String url = "";
+            String url2 = "";
             /* ttsText에 값이 들어온다면 */
             if(!(talePage.getTtsText() == "")){
+                System.out.println("[tts] : " + talePage.getTtsText());
                 byte[] bytes = ttsService.ResponseTTS(talePage.getTtsText());
 
                 InputStream inputStream = new ByteArrayInputStream(bytes);
 
-                String url = awsS3InsertService.uploadFile(inputStream);
-
-                InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
-                String url2 = awsS3InsertService.uploadImage(inputStream2);
-                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, url2);
-                pages.add(page);
+                url = awsS3InsertService.uploadFile(inputStream);
             }
             /* 음성 파일이 들어온다면 */
-            else if(! (talePage.getVoice().toString() == "")){
-                System.out.println("[voice] : " + talePage.getVoice().toString());
+            else if(!(talePage.getVoice().length == 0)){
+                System.out.println("[voice] : " + talePage.getVoice().length);
                 InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
 
-                String url = awsS3InsertService.uploadFile(inputStream);
-
-                InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
-                String url2 = awsS3InsertService.uploadImage(inputStream2);
-
-                TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url,  url2);
-                pages.add(page);
+                url = awsS3InsertService.uploadFile(inputStream);
             }
+            InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
+            url2 = awsS3InsertService.uploadImage(inputStream2);
+            TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, url2);
+            pages.add(page);
         }
 
         tale.setPages(pages);
@@ -196,7 +192,64 @@ public class InsertTaleService {
 //
 //        return "성공";
 //    }
+    public Object updateTale(String accessToken, TaleRequestDTO taleRequestDTO) {
 
+        System.out.println("[updateTaleService : TaleRequestDTO ] \n" + taleRequestDTO);
+
+        /* 엔티티 생성 */
+        Optional<Tale> oTale = taleRepository.findById(taleRequestDTO.getId());
+
+        Tale tale;
+
+        /* 데이터 삽입 */
+        try{
+            tale = oTale.get();
+        }
+        catch (Exception exception){
+            return null;
+        }
+        /* 동화 데이터 엔티티에 넣기 */
+        List<TalePage> pages = new LinkedList<>();
+
+        for(TalePageRequestDTO talePage : taleRequestDTO.getPages()){
+            String url = "";
+            String url2 = "";
+            /* ttsText에 값이 들어온다면 */
+            if(!(talePage.getTtsText() == "")){
+                System.out.println("[tts] : " + talePage.getTtsText());
+                byte[] bytes = ttsService.ResponseTTS(talePage.getTtsText());
+
+                InputStream inputStream = new ByteArrayInputStream(bytes);
+
+                url = awsS3InsertService.uploadFile(inputStream);
+            }
+            /* 음성 파일이 들어온다면 */
+            else if(!(talePage.getVoice().length == 0)){
+                System.out.println("[voice] : " + talePage.getVoice().length);
+                InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
+
+                url = awsS3InsertService.uploadFile(inputStream);
+            }
+            InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
+            url2 = awsS3InsertService.uploadImage(inputStream2);
+            TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, url2);
+            pages.add(page);
+        }
+
+        tale.setPages(pages);
+        tale.setTitle(taleRequestDTO.getTitle());
+        tale.setCreateAt(new Date());
+
+        /* 사용자 정보 (작성자) 가져와서 넣기 */
+        String memberCode = tokenProvider.getUserCode(accessToken);
+        tale.setMemberCode(memberCode);
+        System.out.println(tale);
+        taleRepository.save(tale);
+
+        System.out.println("tale = " + tale);
+
+        return "성공";
+    }
     @Transactional
     public TaleInfo insertTaleInfo(String accessToken, TaleInfoRequestDTO taleInfoRequestDTO) {
 
@@ -252,5 +305,14 @@ public class InsertTaleService {
             return null;
         }
 
+    }
+
+    public String deleteTaleByTaleCode(String taleCode){
+        Optional<Tale> oTale= taleRepository.findById(taleCode);
+        if(oTale.isPresent()) {
+            taleRepository.delete(oTale.get());
+            return taleCode;
+        }
+        return null;
     }
 }
