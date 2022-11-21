@@ -136,6 +136,7 @@ public class MemberService {
         return memberCode;
     }
 
+    @Transactional
     public Object unblockMember(String accessToken, String memberCode) {
         Authentication auth = tokenProvider.getAuthentication(accessToken);
         if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
