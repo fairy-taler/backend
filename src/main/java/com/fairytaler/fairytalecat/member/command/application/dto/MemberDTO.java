@@ -149,4 +149,6 @@ public class MemberDTO implements UserDetails {
                 ", authorities=" + authorities +
                 '}';
     }
+
+
 }
