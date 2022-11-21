@@ -29,8 +29,13 @@ public class TaleQueryController {
     }
 
     @GetMapping("/mylist")
-    public ResponseEntity<ResponseDTO> searchTaleByMemberId(@RequestHeader String accessToken) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(accessToken)));
+    public ResponseEntity<ResponseDTO> searchMyTale(@RequestHeader String accessToken) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberCode(accessToken)));
+    }
+
+    @GetMapping("/list/{memberId}")
+    public ResponseEntity<ResponseDTO> searchTaleByMemberId(@PathVariable String memberId) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(memberId)));
     }
 
 }
