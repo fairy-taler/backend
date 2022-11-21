@@ -8,6 +8,7 @@ import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 
+import com.fairytaler.fairytalecat.member.domain.model.OptionalMemberInfo;
 import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.model.MemberPwd;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
@@ -18,10 +19,12 @@ import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInf
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestProfileDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestUpdatePwdDTO;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -115,5 +118,37 @@ public class MemberService {
         }
 
         return memberId;
+    }
+
+    @Transactional
+    public Object blockMember(String accessToken, String memberCode) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            try {
+                Optional<Member> optionalMemberDTO = Optional.ofNullable(memberInfoRepository.findByMemberCode(Long.parseLong(memberCode)));
+                Member member = optionalMemberDTO.get();
+                member.setBlockStatus("Y");
+                return member;
+            }catch (Exception exception) {
+                return null;
+            }
+        }
+        return memberCode;
+    }
+
+    @Transactional
+    public Object unblockMember(String accessToken, String memberCode) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            try {
+                Optional<Member> optionalMemberDTO = Optional.ofNullable(memberInfoRepository.findByMemberCode(Long.parseLong(memberCode)));
+                Member member = optionalMemberDTO.get();
+                member.setBlockStatus("N");
+                return member;
+            }catch (Exception exception) {
+                return null;
+            }
+        }
+        return memberCode;
     }
 }

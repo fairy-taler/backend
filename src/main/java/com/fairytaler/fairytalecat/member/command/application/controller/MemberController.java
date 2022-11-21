@@ -32,4 +32,14 @@ public class MemberController {
     public ResponseEntity<ResponseDTO> updatePwd(@RequestHeader String accessToken, @RequestBody RequestUpdatePwdDTO requestUpdatePwdDTO){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 수정 성공", memberService.updatePwd(accessToken, requestUpdatePwdDTO)));
     }
+
+    @PutMapping("/block")
+    public ResponseEntity<ResponseDTO> blockMember(@RequestHeader String accessToken, @RequestBody String memberCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 차단 성공", memberService.blockMember(accessToken, memberCode)));
+    }
+
+    @PutMapping("/unblock")
+    public ResponseEntity<ResponseDTO> unblockMember(@RequestHeader String accessToken, @RequestBody String memberCode){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 차단 해제 성공", memberService.unblockMember(accessToken, memberCode)));
+    }
 }
