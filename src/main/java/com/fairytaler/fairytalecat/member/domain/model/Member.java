@@ -36,6 +36,7 @@ public class Member {
     @Column(name="MEMBER_ROLE")
     private String memberRole;
 
-
+    @Column(name="BLOCK_STATUS")
+    private String blockStatus;
 
 }
