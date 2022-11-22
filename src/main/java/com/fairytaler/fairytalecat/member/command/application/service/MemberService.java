@@ -1,6 +1,7 @@
 package com.fairytaler.fairytalecat.member.command.application.service;
 
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.common.file.AwsS3InsertService;
 import com.fairytaler.fairytalecat.exception.LoginFailedException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
@@ -18,7 +19,6 @@ import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInf
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestProfileDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchPwdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestUpdatePwdDTO;
-import com.fairytaler.fairytalecat.tale.command.application.service.AwsS3InsertService;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
