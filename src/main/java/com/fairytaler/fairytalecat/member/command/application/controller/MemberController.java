@@ -4,6 +4,7 @@ import com.fairytaler.fairytalecat.common.response.ResponseDTO;
 import com.fairytaler.fairytalecat.member.command.application.service.MemberService;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInfoDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestProfileDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchPwdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestUpdatePwdDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,4 +44,8 @@ public class MemberController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 차단 해제 성공", memberService.unblockMember(accessToken, memberCode)));
     }
 
+    @PutMapping("/search-pwd")
+    public ResponseEntity<ResponseDTO> searchPwd(@RequestBody RequestSearchPwdDTO requestSearchPwdDTO){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 수정 성공", memberService.searchPwd(requestSearchPwdDTO)));
+    }
 }

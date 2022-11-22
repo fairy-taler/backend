@@ -2,10 +2,12 @@ package com.fairytaler.fairytalecat.member.query.apllication.service;
 
 import com.fairytaler.fairytalecat.avatar.command.application.service.InsertAvatarService;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.exception.LoginFailedException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.model.MemberPwd;
 import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberQueryService {
@@ -87,6 +90,9 @@ public class MemberQueryService {
 
     public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
         Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
+        if(member == null ){
+            throw new LoginFailedException("일치하는 회원 정보가 없습니다.");
+        }
         return member.getMemberId();
     }
 
