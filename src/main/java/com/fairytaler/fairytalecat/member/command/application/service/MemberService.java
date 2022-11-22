@@ -17,6 +17,7 @@ import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.ProfileRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestMemberInfoDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestProfileDTO;
+import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchPwdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestUpdatePwdDTO;
 
 import org.springframework.security.core.Authentication;
@@ -150,5 +151,25 @@ public class MemberService {
             }
         }
         return memberCode;
+    }
+
+    public Object searchPwd(RequestSearchPwdDTO requestSearchPwdDTO) {
+
+        Member member = memberInfoRepository.findByMemberNameAndMemberId(requestSearchPwdDTO.getMemberName(), requestSearchPwdDTO.getMemberId());
+        if(member == null ){
+            throw new LoginFailedException("일치하는 회원 정보가 없습니다.");
+        }
+        Optional<MemberPwd> optionalMember = memberPwdRepository.findById(member.getMemberId());
+
+        try{
+            MemberPwd updateMember = optionalMember.get();
+            updateMember.setMemberPwd(passwordEncoder.encode(requestSearchPwdDTO.getNewPwd()));
+            memberPwdRepository.save(updateMember);
+        }
+        catch (Exception exception){
+            return null;
+        }
+
+        return member.getMemberId();
     }
 }

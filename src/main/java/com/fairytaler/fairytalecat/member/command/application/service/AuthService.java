@@ -52,11 +52,16 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDTO login(MemberDTO memberDTO) {
+    public TokenDTO login(MemberDTO memberDTO)  {
         MemberDTO member = memberMapper.findByMemberId(memberDTO.getMemberId())
                 .orElseThrow(() -> new LoginFailedException("잘못된 아이디 또는 비밀번호 입니다."));
 
         System.out.println("member = " + member);
+
+        if(member.getBlockStatus().equals("Y")) {
+            throw new LoginFailedException("회원 로그인이 차단된 회원입니다. ");
+        }
+
         if(!passwordEncoder.matches(memberDTO.getMemberPwd(), member.getMemberPwd())){
             throw new LoginFailedException("잘못된 아이디 또는 비밀번호 입니다.");
         }
