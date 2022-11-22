@@ -19,9 +19,11 @@ public class MemberDTO implements UserDetails {
     private  String nickname;
     private String memberRole;
 
+    private String blockStatus;
+
     public MemberDTO () {}
 
-    public MemberDTO(Long memberCode, String memberId, String memberPwd, String memberName, String email, String phone, String nickname, String memberRole) {
+    public MemberDTO(Long memberCode, String memberId, String memberPwd, String memberName, String email, String phone, String nickname, String memberRole, String blockStatus) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPwd = memberPwd;
@@ -30,6 +32,7 @@ public class MemberDTO implements UserDetails {
         this.phone = phone;
         this.nickname = nickname;
         this.memberRole = memberRole;
+        this.blockStatus = blockStatus;
     }
 
     public Long getMemberCode() {
@@ -92,6 +95,30 @@ public class MemberDTO implements UserDetails {
         return memberRole;
     }
 
+    @Override
+    public String toString() {
+        return "MemberDTO{" +
+                "memberCode=" + memberCode +
+                ", memberId='" + memberId + '\'' +
+                ", memberPwd='" + memberPwd + '\'' +
+                ", memberName='" + memberName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", memberRole='" + memberRole + '\'' +
+                ", blockStatus='" + blockStatus + '\'' +
+                ", authorities=" + authorities +
+                '}';
+    }
+
+    public String getBlockStatus() {
+        return blockStatus;
+    }
+
+    public void setBlockStatus(String blockStatus) {
+        this.blockStatus = blockStatus;
+    }
+
     public void setMemberRole(String memberRole) {
         this.memberRole = memberRole;
     }
@@ -133,21 +160,6 @@ public class MemberDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberDTO{" +
-                "memberCode=" + memberCode +
-                ", memberId='" + memberId + '\'' +
-                ", memberPwd='" + memberPwd + '\'' +
-                ", memberName='" + memberName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", memberRole='" + memberRole + '\'' +
-                ", authorities=" + authorities +
-                '}';
     }
 
 

@@ -42,4 +42,5 @@ public class MemberController {
     public ResponseEntity<ResponseDTO> unblockMember(@RequestHeader String accessToken, @RequestBody String memberCode){
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 차단 해제 성공", memberService.unblockMember(accessToken, memberCode)));
     }
+
 }
