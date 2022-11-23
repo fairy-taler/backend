@@ -46,7 +46,7 @@ public class MemberController {
     }
 
     @PutMapping("/search-pwd")
-    public ResponseEntity<ResponseDTO> searchPwd(@RequestBody RequestSearchPwdDTO requestSearchPwdDTO){
+    public ResponseEntity<ResponseDTO> searchPwd(@RequestBody RequestSearchPwdDTO requestSearchPwdDTO) throws ParseException{
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 수정 성공", memberService.searchPwd(requestSearchPwdDTO)));
     }
 }
