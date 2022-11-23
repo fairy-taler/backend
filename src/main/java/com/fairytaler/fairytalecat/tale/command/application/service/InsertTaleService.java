@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
+import com.fairytaler.fairytalecat.common.file.AwsS3InsertService;
 import com.fairytaler.fairytalecat.community.domain.model.Comment;
 import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import com.fairytaler.fairytalecat.community.domain.model.Notice;

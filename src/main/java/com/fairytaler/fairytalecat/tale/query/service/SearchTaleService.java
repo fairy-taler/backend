@@ -1,11 +1,13 @@
 package com.fairytaler.fairytalecat.tale.query.service;
 
 import com.fairytaler.fairytalecat.exception.TaleException;
+import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
 import com.fairytaler.fairytalecat.tale.command.application.service.InsertTaleService;
+import com.fairytaler.fairytalecat.tale.domain.model.Tale;
 import com.fairytaler.fairytalecat.tale.domain.model.TaleInfo;
 import com.fairytaler.fairytalecat.tale.domain.model.TaleList;
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleInfoRepository;
@@ -14,6 +16,8 @@ import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleInfoRequestDTO;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleRequestDTO;
 import com.fairytaler.fairytalecat.tale.query.dto.TaleResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -87,6 +91,26 @@ public class SearchTaleService {
         }
     }
 
+    public Object getTaleListWithPaging(Pageable pageable) {
+
+        Page<TaleList> tales = taleListRepository.findAll(pageable);
+
+        if(tales == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 공지사항이 없습니다.");
+        }
+        return tales;
+    }
+    public Object searchTaleByTitle(String title,Pageable pageable) {
+
+        Page<TaleList> tales = taleListRepository.findByTitleContaining(title, pageable);
+
+        if(tales == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 공지사항이 없습니다.");
+        }
+        return tales;
+    }
     public Object searchTaleByMemberId(String memberId) {
 
         List<TaleResponseDTO> taleResponseDTOs = new LinkedList<>();
@@ -119,5 +143,4 @@ public class SearchTaleService {
             return taleResponseDTOs;
         }
     }
-
 }
