@@ -79,7 +79,7 @@ public class AuthService {
             Member member = memberInfoRepository.deleteMemberByMemberCode(memberCode);
             return member;
         } catch (Exception exception){
-            return null;
+            throw new LoginFailedException("회원 탈퇴에 실패하였습니다.");
         }
     }
 }

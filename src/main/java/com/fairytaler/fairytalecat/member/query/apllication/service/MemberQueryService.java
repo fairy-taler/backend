@@ -2,7 +2,9 @@ package com.fairytaler.fairytalecat.member.query.apllication.service;
 
 import com.fairytaler.fairytalecat.avatar.command.application.service.InsertAvatarService;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.exception.AuthorizationException;
 import com.fairytaler.fairytalecat.exception.LoginFailedException;
+import com.fairytaler.fairytalecat.exception.UserNotFoundException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
@@ -101,9 +103,9 @@ public class MemberQueryService {
         if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
             List<Member> members = memberInfoRepository.findAll();
             return members;
+        }else {
+            throw new AuthorizationException("접근 권한이 없습니다.");
         }
-        return null;
-
     }
 
 
@@ -112,6 +114,9 @@ public class MemberQueryService {
         ResponseProfileDTO responseProfileDTO = new ResponseProfileDTO();
         Profile profile = profileRepository.findByMemberCode(memberCode);
         Member member = memberInfoRepository.findByMemberCode(memberCode);
+        if(member == null || profile == null ){
+            throw new UserNotFoundException("회원 정보를 불러올 수 없습니다.");
+        }
         responseProfileDTO.setProfile(profile);
         responseProfileDTO.setMemberName(member.getMemberName());
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
@@ -124,6 +129,9 @@ public class MemberQueryService {
         Long memberCode = memberInfoRepository.findByMemberId(memberId).getMemberCode();
         Profile profile = profileRepository.findByMemberCode(memberCode);
         Member member = memberInfoRepository.findByMemberCode(memberCode);
+        if(member == null || profile == null ){
+            throw new UserNotFoundException("회원 정보를 불러올 수 없습니다.");
+        }
         responseProfileDTO.setProfile(profile);
         responseProfileDTO.setMemberName(member.getMemberName());
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));

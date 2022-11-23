@@ -1,7 +1,10 @@
 package com.fairytaler.fairytalecat.member.command.application.service;
 
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.exception.BlockFailedException;
+import com.fairytaler.fairytalecat.exception.ChangePwdFailedException;
 import com.fairytaler.fairytalecat.exception.LoginFailedException;
+import com.fairytaler.fairytalecat.exception.UpdateFailedException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
@@ -72,7 +75,7 @@ public class MemberService {
             return member;
         }
         catch (Exception exception){
-            return null;
+            throw new UpdateFailedException("업데이트에 실패하였습니다. ");
         }
 
     }
@@ -90,13 +93,17 @@ public class MemberService {
         if (optionalProfile != null) {
             profile = optionalProfile;
         }
+        try {
+            profile.setMemberCode(memberCode);
+            profile.setIntro(requestProfileDTO.getIntro());
+            String url = awsS3InsertService.uploadFileByMultipartFile(requestProfileDTO.getProfileImg());
+            profile.setImgUrl(url);
+            profileRepository.save(profile);
+            System.out.println("profile = " + profile);
+        }catch (Exception exception){
+            throw new UpdateFailedException("회원 프로필 변경에 실패하였습니다. ");
+        }
 
-        profile.setMemberCode(memberCode);
-        profile.setIntro(requestProfileDTO.getIntro());
-        String url = awsS3InsertService.uploadFileByMultipartFile(requestProfileDTO.getProfileImg());
-        profile.setImgUrl(url);
-        profileRepository.save(profile);
-        System.out.println("profile = " + profile);
         return profile;
     }
 
@@ -105,7 +112,7 @@ public class MemberService {
         String memberId = tokenProvider.getUserId(accessToken);
         Optional<MemberDTO> member = memberMapper.findByMemberId(memberId);
         if(!passwordEncoder.matches(requestUpdatePwdDTO.getOriginalPwd(),member.get().getMemberPwd())){
-            throw new LoginFailedException("잘못된 비밀번호 입니다.");
+            throw new ChangePwdFailedException("잘못된 비밀번호 입니다.");
         }
         Optional<MemberPwd> optionalMember = memberPwdRepository.findById(memberId);
 
@@ -115,7 +122,7 @@ public class MemberService {
             memberPwdRepository.save(updateMember);
         }
         catch (Exception exception){
-            return null;
+            throw new ChangePwdFailedException("비밀번호 재설정에 실패하였습니다.");
         }
 
         return memberId;
@@ -131,7 +138,7 @@ public class MemberService {
                 member.setBlockStatus("Y");
                 return member;
             }catch (Exception exception) {
-                return null;
+                throw new BlockFailedException("회원 차단에 실패하였습니다");
             }
         }
         return memberCode;
@@ -147,7 +154,7 @@ public class MemberService {
                 member.setBlockStatus("N");
                 return member;
             }catch (Exception exception) {
-                return null;
+                throw new BlockFailedException("회원 차단 해제에 실패하였습니다. ");
             }
         }
         return memberCode;
@@ -167,7 +174,7 @@ public class MemberService {
             memberPwdRepository.save(updateMember);
         }
         catch (Exception exception){
-            return null;
+            throw new ChangePwdFailedException("회원 비밀번호 변경에 실패하였습니다. ");
         }
 
         return member.getMemberId();
