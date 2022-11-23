@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,8 +74,8 @@ public class MemberService {
 
             memberInfoRepository.save(member);
             return member;
-        }
-        catch (Exception exception){
+        } catch (Exception exception){
+            exception.printStackTrace();
             throw new UpdateFailedException("업데이트에 실패하였습니다. ");
         }
 

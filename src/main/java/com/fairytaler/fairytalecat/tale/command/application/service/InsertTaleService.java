@@ -8,6 +8,7 @@ import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.community.domain.model.Comment;
 import com.fairytaler.fairytalecat.community.domain.model.Faq;
 import com.fairytaler.fairytalecat.community.domain.model.Notice;
+import com.fairytaler.fairytalecat.exception.TaleException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.mongoTest.model.MongoDBTestModel;
 import com.fairytaler.fairytalecat.mongoTest.service.AwsS3Service;
@@ -255,30 +256,43 @@ public class InsertTaleService {
 
         TaleInfo taleInfo = new TaleInfo();
 
-        taleInfo.setId(taleInfoRequestDTO.getId());
-        taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
-        taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
-        taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
-        taleInfo.setFontPositionX(taleInfoRequestDTO.getFontPositionX());
-        taleInfo.setFontPositionY(taleInfoRequestDTO.getFontPositionY());
-        taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
-        taleInfo.setSticker(taleInfoRequestDTO.getSticker());
-        taleInfo.setStickerPositionX(taleInfoRequestDTO.getStickerPositionX());
-        taleInfo.setStickerPositionY(taleInfoRequestDTO.getStickerPositionY());
+        if(taleRepository.findById(taleInfoRequestDTO.getId()).isEmpty()){
+            throw new TaleException("해당 동화가 존재하지 않습니다. ");
+        }
+        try {
+            taleInfo.setId(taleInfoRequestDTO.getId());
+            taleInfo.setFontStyle(taleInfoRequestDTO.getFontStyle());
+            taleInfo.setFontSize(taleInfoRequestDTO.getFontSize());
+            taleInfo.setFontColor(taleInfoRequestDTO.getFontColor());
+            taleInfo.setFontPositionX(taleInfoRequestDTO.getFontPositionX());
+            taleInfo.setFontPositionY(taleInfoRequestDTO.getFontPositionY());
+            taleInfo.setCoverColor(taleInfoRequestDTO.getCoverColor());
+            taleInfo.setSticker(taleInfoRequestDTO.getSticker());
+            taleInfo.setStickerPositionX(taleInfoRequestDTO.getStickerPositionX());
+            taleInfo.setStickerPositionY(taleInfoRequestDTO.getStickerPositionY());
 
-        InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
-        String url = awsS3InsertService.uploadImage(inputStream);
+            InputStream inputStream = new ByteArrayInputStream(taleInfoRequestDTO.getInputImg());
+            String url = awsS3InsertService.uploadImage(inputStream);
 
-        taleInfo.setThumbNail(url);
+            taleInfo.setThumbNail(url);
 
-        taleInfoRepository.save(taleInfo);
+            taleInfoRepository.save(taleInfo);
 
-        return taleInfo;
+            return taleInfo;
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            throw new TaleException("동화 세부 정보 등록에 실패하였습니다.");
+        }
     }
 
     public TaleInfo updateTaleInfo(TaleInfoRequestDTO taleInfoRequestDTO) {
 
         Optional<TaleInfo> optionalTaleInfo = taleInfoRepository.findById(taleInfoRequestDTO.getId());
+
+        if(taleRepository.findById(taleInfoRequestDTO.getId()).isEmpty()){
+            throw new TaleException("해당 동화가 존재하지 않습니다. ");
+        }
+
         try{
             TaleInfo taleInfo = optionalTaleInfo.get();
 
@@ -300,9 +314,9 @@ public class InsertTaleService {
             taleInfoRepository.save(taleInfo);
 
             return taleInfo;
-        }
-        catch (Exception exception){
-            return null;
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            throw new TaleException("동화 세부 정보 수정에 실패하였습니다.");
         }
 
     }
