@@ -1,7 +1,8 @@
-package com.fairytaler.fairytalecat.avatar.command.application.service;
+package com.fairytaler.fairytalecat.avatar.query.service;
 
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.exception.AvatarException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,11 @@ public class SearchAvatarService {
     }
 
     public Avatar SearchAvatar(String accessToken) {
-        String memberCode = tokenProvider.getUserCode(accessToken);
-        return avatarRepository.findByMemberCode(Long.parseLong(memberCode));
+        try {
+            String memberCode = tokenProvider.getUserCode(accessToken);
+            return avatarRepository.findByMemberCode(Long.parseLong(memberCode));
+        }catch (Exception exception){
+            throw new AvatarException("아바타 정보가 없습니다.");
+        }
     }
 }
