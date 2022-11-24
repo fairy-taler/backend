@@ -15,7 +15,6 @@ env:
   AWS_REGION: ap-northeast-2
   EB_ENVIRONMENT_NAME: Fairytalerback-env
   EB_APPLICATION_NAME: Fairytaler-back
-  EB_DEPLOYMENT_PACKAGE: fairytaler/docker-compose.yml
   spring.datasource.url: ${{ secrets.DATASOURCE_URL }} 
   spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }} 
   spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }} 
