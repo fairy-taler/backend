@@ -39,7 +39,7 @@ jobs:
     - name: Set application.yml from Secrets
       uses: actions/checkout@v2
     - run: touch ./src/main/resources/application.yml
-    - run: echo "${{env.APPLICATION}}" > ./src/main/resoures/application.yml
+    - run: echo "${{env.APPLICATION}}" > ./src/main/resources/application.yml
     - uses: actions/upload-artifact@v2
       with:
         name: application.yml
