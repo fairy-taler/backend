@@ -1,8 +1,10 @@
-name: fairytaler-backend Server CI/CD
+name: deploy
 
-on:
-  pull_request:
-    branches: [main]
+on: # main branch에 push를 할 때 동작합니다!
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
 
 env:
   # Java
@@ -11,83 +13,42 @@ env:
   DOCKER_HUB_USERNAME: jihi1013
   # AWS & Elastic Bean Stalk
   AWS_REGION: ap-northeast-2
-  EB_ENVIRONMENT_NAME: Fairytalerback-env
-  EB_APPLICATION_NAME: Fairytaler-back
+  EB_ENVIRONMENT_NAME: Fairytaler-back-env
+  EB_APPLICATION_NAME: fairytaler-back
   EB_DEPLOYMENT_PACKAGE: fairytaler/docker-compose.yml
-  spring.datasource.url: ${{ secrets.DATASOURCE_URL }} 
-  spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }} 
-  spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }} 
-  jwt.secret: ${{ secrets.JWT_SECRET }}    
 
 jobs:
-  build:
-    name: CI PipeLine
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-    
-    - name: Set application.yml from Secrets
-      uses: microsoft/variable-substitution@v1
-        
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-    - name: Login to DockerHub
-      run: docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD_CDH }}
-      
-    - name: Build DockerImage
-      run: docker build -t ${{ env.DOCKER_HUB_USERNAME }}/backend:latest ./
-        
-    - name: Push DockerImage
-      run: docker push ${{ env.DOCKER_HUB_USERNAME }}/backend:latest
-
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
-  
   deploy:
-      name: CD PipeLine
-      runs-on: ubuntu-latest
-      needs: build
-      
-      steps:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-      
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.4.3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Build Number
+        id: build-number
+        run: echo "::set-output name=BUILD_NUMBER::$(date '+%-d.%-m.%Y.%-H.%-M.%-S')"
+
+      - name: Docker Login
+        uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a
         with:
-          format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"    
-          
-      - name: Generate deployment directory
-        run: |
-          mkdir -p deploy
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cd deploy && zip -r deploy.zip .
+          username: ${{ env.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Push to Dockerhub
+        run: ./gradlew jib
 
       - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v14
+        uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: ${{ env.AWS_REGION }}
           environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
           application_name: ${{ env.EB_APPLICATION_NAME }}
-          version_label: fairytaler-cicd-${{steps.current-time.outputs.formattedTime}}
-          deployment_package: deploy/deploy.zip
-          wait_for_environment_recovery: 200
+          deployment_package: ${{ env.EB_DEPLOYMENT_PACKAGE }}
+          version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
+          version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}
+          wait_for_deployment: 60
