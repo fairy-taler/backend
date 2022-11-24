@@ -84,7 +84,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{ secrets.AWS_REGION }}
+          region: ${{ env.AWS_REGION }}
           environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
           application_name: ${{ env.EB_APPLICATION_NAME }}
           version_label: fairytaler-cicd-${{steps.current-time.outputs.formattedTime}}
