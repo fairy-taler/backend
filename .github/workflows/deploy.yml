@@ -18,7 +18,8 @@ env:
   spring.datasource.url: ${{ secrets.DATASOURCE_URL }} 
   spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }} 
   spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }} 
-  jwt.secret: ${{ secrets.JWT_SECRET }}    
+  jwt.secret: ${{ secrets.JWT_SECRET }}   
+  APPLICATION: ${{ secrets.APPLICATION }}
 
 jobs:
   build:
@@ -36,7 +37,14 @@ jobs:
         cache: maven
     
     - name: Set application.yml from Secrets
-      uses: microsoft/variable-substitution@v1
+      uses: actions/checkout@v2
+    - run: touch ./src/main/resources/application.yml
+    - run: echo "${{env.APPLICATION}}" > ./src/main/resoures/application.yml
+    - uses: actions/upload-artifact@v2
+      with:
+        name: application.yml
+        path: ./src/main/resources/application.yml
+    
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml
