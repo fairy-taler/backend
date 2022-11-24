@@ -50,7 +50,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Login to DockerHub
-      run: docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD_CDH }}
+      run: docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
       
     - name: Build DockerImage
       run: docker build -t ${{ env.DOCKER_HUB_USERNAME }}/backend:latest ./
