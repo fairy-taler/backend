@@ -40,4 +40,9 @@ public class AvatarController {
     public ResponseEntity<ResponseDTO> updateAvatar(@RequestBody AvatarRequestDTO avatarRequestDTO, @RequestHeader String accessToken) throws ParseException {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "아바타 변경 성공", updateAvatarService.UpdateAvatar(accessToken, avatarRequestDTO)));
     }
+
+    @GetMapping("/hello")
+    public ResponseEntity<ResponseDTO> searchPwd() throws ParseException{
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 수정 성공", "성공"));
+    }
 }
