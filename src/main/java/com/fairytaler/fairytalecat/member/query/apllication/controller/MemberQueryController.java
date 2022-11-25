@@ -59,4 +59,9 @@ public class MemberQueryController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 정보 조회 성공", memberQueryService.findProfileById(memberId)));
     }
 
+    @GetMapping("/member-search/{keyword}")
+    public ResponseEntity<ResponseDTO> memberSearch(@RequestHeader String accessToken, @PathVariable String keyword) throws ParseException{
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회원 검색 성공", memberQueryService.searchMember(accessToken,keyword)));
+    }
+
 }
