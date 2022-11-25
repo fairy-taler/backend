@@ -11,7 +11,6 @@ import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 
-import com.fairytaler.fairytalecat.member.domain.model.OptionalMemberInfo;
 import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.model.MemberPwd;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
@@ -28,8 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -180,4 +177,5 @@ public class MemberService {
 
         return member.getMemberId();
     }
+
 }

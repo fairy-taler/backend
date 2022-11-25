@@ -19,6 +19,8 @@ import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseProfileD
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -101,7 +103,7 @@ public class MemberQueryService {
     public List<Member> findAllMember(String accessToken) {
         Authentication auth = tokenProvider.getAuthentication(accessToken);
         if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
-            List<Member> members = memberInfoRepository.findAll();
+            List<Member> members = memberInfoRepository.findAll(Sort.by(Sort.Direction.ASC, "memberCode"));
             return members;
         }else {
             throw new AuthorizationException("접근 권한이 없습니다.");
@@ -131,5 +133,26 @@ public class MemberQueryService {
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
 
         return responseProfileDTO;
+    }
+
+    public Object searchMember(String accessToken, String keyword) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            try {
+                Specification<Member> spec = (root, query, criteriaBuilder) -> null;
+                spec = spec.or(MemberSpecification.equalMemberId(keyword));
+                spec = spec.or(MemberSpecification.equalMemberName(keyword));
+                spec = spec.or(MemberSpecification.equalNickname(keyword));
+                spec = spec.or(MemberSpecification.equalEmail(keyword));
+                spec = spec.or(MemberSpecification.equalPhone(keyword));
+
+                List<Member> members = memberInfoRepository.findAll(spec);
+                return members;
+
+            }catch (Exception exception) {
+                throw new LoginFailedException("회원 검색에 실패하였습니다");
+            }
+        }
+        return null;
     }
 }

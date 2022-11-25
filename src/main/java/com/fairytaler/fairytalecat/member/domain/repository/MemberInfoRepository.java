@@ -2,8 +2,9 @@ package com.fairytaler.fairytalecat.member.domain.repository;
 
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface MemberInfoRepository extends JpaRepository<Member, String> {
+public interface MemberInfoRepository extends JpaRepository<Member, String>, JpaSpecificationExecutor<Member> {
 
     Member findByMemberCode(Long memberCode);
 
@@ -14,5 +15,6 @@ public interface MemberInfoRepository extends JpaRepository<Member, String> {
     Member findByMemberNameAndEmail(String memberName, String email);
 
     Member findByMemberNameAndMemberId(String memberName, String memberId);
+
 
 }
