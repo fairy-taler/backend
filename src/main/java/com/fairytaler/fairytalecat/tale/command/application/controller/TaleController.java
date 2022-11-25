@@ -47,6 +47,7 @@ public class TaleController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 삭제 성공", deleteId));
     }
 
+
 //    @PostMapping("/tts")
 //    public ResponseEntity<ResponseDTO> insertTaleTTS(@RequestHeader String accessToken, @RequestBody TaleTTSRequestDTO taleTTSRequestDTO) {
 //        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 등록 성공", insertTaleService.insertTTSTale(accessToken,taleTTSRequestDTO)));
