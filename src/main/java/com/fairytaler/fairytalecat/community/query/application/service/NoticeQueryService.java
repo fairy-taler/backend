@@ -2,6 +2,7 @@ package com.fairytaler.fairytalecat.community.query.application.service;
 
 import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import com.fairytaler.fairytalecat.community.query.application.dao.NoticeQueryDAO;
+import com.fairytaler.fairytalecat.tale.domain.model.TaleList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,15 @@ public class NoticeQueryService {
             System.out.println("해당 번호의 공지사항이 없습니다.");
         }
         return notice;
+    }
+    public Object searchNoticeByTitle(String title,Pageable pageable) {
+
+        Page<Notice> notices = noticeQueryDao.findByTitleContaining(title, pageable);
+
+        if(notices  == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 번호의 공지사항이 없습니다.");
+        }
+        return notices;
     }
 }

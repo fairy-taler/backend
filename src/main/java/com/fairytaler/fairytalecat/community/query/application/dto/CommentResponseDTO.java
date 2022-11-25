@@ -13,7 +13,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class CommentResponseDTO {
     private String nickname;
+    private String memberId;
+    private String profileUrl;
     private String content;
     private Date createDate;
+    private boolean isMyComment;
     public CommentResponseDTO(){}
 }

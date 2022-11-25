@@ -1,6 +1,7 @@
 package com.fairytaler.fairytalecat.community.query.application.service;
 
 import com.fairytaler.fairytalecat.community.domain.model.Faq;
+import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import com.fairytaler.fairytalecat.community.query.application.dao.FaqQueryDAO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,5 +34,15 @@ public class FaqQueryService {
             System.out.println("해당 번호의 공지사항이 없습니다.");
         }
         return faq;
+    }
+    public Object searchFaqByTitle(String title,Pageable pageable) {
+
+        Page<Faq> faqs = faqQueryDao.findByTitleContaining(title, pageable);
+
+        if(faqs  == null){
+//            throw new NoMemberException(); //예외 처리
+            System.out.println("해당 내용의 faq가 없습니다.");
+        }
+        return faqs;
     }
 }

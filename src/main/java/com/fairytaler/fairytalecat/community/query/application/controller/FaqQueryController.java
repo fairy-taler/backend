@@ -37,4 +37,8 @@ public class FaqQueryController {
         /* 공지사항이 있으면 조회 후 반환 */
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "FAQ 전체 조회 성공", faqQueryService.getNoticeListWidthPaging(pageable)));
     }
+    @GetMapping("/faq/title")
+    public ResponseEntity<ResponseDTO> selectTaleByTitle(String title, Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "Faq 제목으로 검색 성공", faqQueryService.searchFaqByTitle(title,pageable)));
+    }
 }

@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ForumQueryDAO extends JpaRepository<Forum, Long> {
     Page<Forum> findByCategory(String category, Pageable pageable);
     Page<Forum> findByMemberCode(String memberCode, Pageable pageable);
+    Page<Forum> findByTitleContaining(String title, Pageable pageable);
 }

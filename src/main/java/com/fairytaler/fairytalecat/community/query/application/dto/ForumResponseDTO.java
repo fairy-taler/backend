@@ -22,6 +22,8 @@ public class ForumResponseDTO{
     private Date createDate;
     private String category;
     private String memberId;
+    private String profileUrl;
+    private boolean isMyForum;
 
     private List<CommentResponseDTO> comments;
 

@@ -33,7 +33,7 @@ public class Forum{
     private String title;
     private String content;
     private String memberCode;
-    private Date CreateDate;
+    private Date createDate;
 
     public Forum(){}
 
