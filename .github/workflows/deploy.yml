@@ -13,7 +13,7 @@ env:
   DOCKER_HUB_USERNAME: jihi1013
   # AWS & Elastic Bean Stalk
   AWS_REGION: ap-northeast-2
-  EB_ENVIRONMENT_NAME: Fairytaler-env
+  EB_ENVIRONMENT_NAME: Fairytaler-env-1
   EB_APPLICATION_NAME: fairytaler
   spring.datasource.url: ${{ secrets.DATASOURCE_URL }} 
   spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }} 
