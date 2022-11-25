@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface FaqQueryDAO extends JpaRepository<Faq, Long> {
 
     Optional<Faq> findByFaqCode(Long faqCode);
-
     Page<Faq> findAll(Pageable pageable);
+    Page<Faq> findByTitleContaining(String title,Pageable pageable);
 }

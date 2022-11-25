@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface NoticeQueryDAO extends JpaRepository<Notice, Long> {
     Optional<Notice> findByNoticeCode(Long noticeCode);
     Page<Notice> findAll(Pageable pageable);
+    Page<Notice> findByTitleContaining(String title, Pageable pageable);
 }

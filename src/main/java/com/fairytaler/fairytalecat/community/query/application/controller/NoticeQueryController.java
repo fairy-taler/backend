@@ -34,5 +34,10 @@ public class NoticeQueryController {
         /* 공지사항이 있으면 조회 후 반환 */
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 조회 성공", noticeQueryService.getNoticeListWidthPaging(pageable)));
     }
+    /* 공지사항 검색 */
+    @GetMapping("/notices/title")
+    public ResponseEntity<ResponseDTO> selectTaleByTitle(String title, Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 제목으로 검색 성공", noticeQueryService.searchNoticeByTitle(title,pageable)));
+    }
 
 }

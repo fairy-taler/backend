@@ -41,17 +41,22 @@ public class ForumQueryController {
     /* 게시판 전체 조회 */
     @GetMapping("/forums")
     public ResponseEntity<ResponseDTO> selectForumListWithPaging(Pageable pageable){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService. getForumListWidthPaging2(pageable)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService.getForumListWidthPaging2(pageable)));
     }
     /* 카테고리 별 게시글 조회 */
     @GetMapping("/forums/category")
     public ResponseEntity<ResponseDTO> selectForumListByCategoryWithPaging(String category,Pageable pageable){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService. getForumListByCategoryWidthPaging(category,pageable)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService.getForumListByCategoryWidthPaging(category,pageable)));
     }
     /* 내가 쓴 게시글 조회 */
     @GetMapping("/forums/my")
     public ResponseEntity<ResponseDTO> selectForumListByMemberCodeWithPaging(@RequestHeader String accessToken, Pageable pageable){
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService. getForumListByMemberCodeWidthPaging(accessToken, pageable)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "문의 조회 성공", forumQueryService.getForumListByMemberCodeWidthPaging(accessToken, pageable)));
+    }
+    /* 게시글 검색 */
+    @GetMapping("/forums/title")
+    public ResponseEntity<ResponseDTO> selectTaleByTitle(String title, Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시글 제목으로 검색 성공", forumQueryService.searchForumByTitle(title,pageable)));
     }
 
 }
