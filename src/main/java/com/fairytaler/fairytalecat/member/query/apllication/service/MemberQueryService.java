@@ -114,9 +114,6 @@ public class MemberQueryService {
         ResponseProfileDTO responseProfileDTO = new ResponseProfileDTO();
         Profile profile = profileRepository.findByMemberCode(memberCode);
         Member member = memberInfoRepository.findByMemberCode(memberCode);
-        if(member == null || profile == null ){
-            throw new UserNotFoundException("회원 정보를 불러올 수 없습니다.");
-        }
         responseProfileDTO.setProfile(profile);
         responseProfileDTO.setMemberName(member.getMemberName());
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
@@ -129,9 +126,6 @@ public class MemberQueryService {
         Long memberCode = memberInfoRepository.findByMemberId(memberId).getMemberCode();
         Profile profile = profileRepository.findByMemberCode(memberCode);
         Member member = memberInfoRepository.findByMemberCode(memberCode);
-        if(member == null || profile == null ){
-            throw new UserNotFoundException("회원 정보를 불러올 수 없습니다.");
-        }
         responseProfileDTO.setProfile(profile);
         responseProfileDTO.setMemberName(member.getMemberName());
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
