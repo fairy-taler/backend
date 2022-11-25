@@ -25,15 +25,14 @@ public class ForumQueryController {
 
     /* 게시판 상세 조회 */
     @GetMapping("/forums/{forumCode}")
-    public ResponseEntity<ResponseDTO> selectForum(@PathVariable Long forumCode){
+    public ResponseEntity<ResponseDTO> selectForum(@RequestHeader String accessToken, @PathVariable Long forumCode){
         System.out.println("forumController selectForum1 : " + forumCode);
-        ForumResponseDTO forumResponseDTO = forumQueryService.getForum(forumCode);
-        System.out.println("forumController selectForum2 : " + forumResponseDTO);
-        List<CommentResponseDTO> comments = forumQueryService.getCommentInForum(forumCode);
-
-        if(comments == null){
+        ForumResponseDTO forumResponseDTO = forumQueryService.getForum(accessToken, forumCode);
+        if(forumResponseDTO == null){
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시판 조회 실패", null));
         }
+        System.out.println("forumController selectForum2 : " + forumResponseDTO);
+        List<CommentResponseDTO> comments = forumQueryService.getCommentInForum(accessToken, forumCode);
         forumResponseDTO.setComments(comments);
         /* 공지사항이 있으면 조회 후 반환 */
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시판 조회 성공", forumResponseDTO));

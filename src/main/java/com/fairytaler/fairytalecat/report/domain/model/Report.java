@@ -45,5 +45,5 @@ public class Report {
     private String attachment;
 
     @Column(name="CREATE_DATE")
-    private Date craeteDate;
+    private Date createDate;
 }

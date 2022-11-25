@@ -15,5 +15,6 @@ public class CommentResponseDTO {
     private String nickname;
     private String content;
     private Date createDate;
+    private boolean isMyComment;
     public CommentResponseDTO(){}
 }

@@ -32,7 +32,7 @@ public class ForumQueryService {
         this.memberInfoRepository = memberInfoRepository;
         this.tokenProvider = tokenProvider;
     }
-    public ForumResponseDTO getForum(Long forumCode){
+    public ForumResponseDTO getForum(String accessToken, Long forumCode){
         /* 게시판 조회 */
         Optional<Forum> oForum = forumQueryDao.findById(forumCode);
         Forum forum;
@@ -50,15 +50,22 @@ public class ForumQueryService {
         forumResponseDTO.setCreateDate(forum.getCreateDate());
         forumResponseDTO.setMemberCode(forum.getMemberCode());
         /* 닉네임 조회 */
-        String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
-        forumResponseDTO.setNickname(nickname);
+        Member writer = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode()));
+        String memberCode = tokenProvider.getUserCode(accessToken);
+        forumResponseDTO.setNickname(writer.getNickname());
+        if(Long.parseLong(memberCode) == writer.getMemberCode()){
+            forumResponseDTO.setMyForum(true);
+        }
+        else{
+            forumResponseDTO.setMyForum(false);
+        }
         /* 회원 아이디 조회 */
         String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
         forumResponseDTO.setMemberId(memberId);
 
         return forumResponseDTO;
 }
-    public List<CommentResponseDTO> getCommentInForum(Long forumCode){
+    public List<CommentResponseDTO> getCommentInForum(String accessToken, Long forumCode){
         List<Comment> comments = commentQueryDAO.findByForumCode(forumCode);
         List<CommentResponseDTO> commentDTOList = new ArrayList<>();
 
@@ -67,9 +74,15 @@ public class ForumQueryService {
             commentResponseDTO.setContent(comment.getContent());
             commentResponseDTO.setCreateDate(comment.getCreateDate());
             /* 닉네임 검색해서 넣기 */
-            Member member = memberInfoRepository.findByMemberCode(Long.parseLong(comment.getMemberCode()));
-            commentResponseDTO.setNickname(member.getNickname());
-
+            Member commenter = memberInfoRepository.findByMemberCode(Long.parseLong(comment.getMemberCode()));
+            String memberCode = tokenProvider.getUserCode(accessToken);
+            commentResponseDTO.setNickname(commenter.getNickname());
+            if(Long.parseLong(memberCode) == commenter.getMemberCode()){
+                commentResponseDTO.setMyComment(true);
+            }
+            else{
+                commentResponseDTO.setMyComment(false);
+            }
             commentDTOList.add(commentResponseDTO);
         }
         return commentDTOList;

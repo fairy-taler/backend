@@ -77,12 +77,12 @@ public class InsertTaleService {
             /* 음성 파일이 들어온다면 */
             else if(!(talePage.getVoice().length == 0)){
                 System.out.println("[voice] : " + talePage.getVoice().length);
-                InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
+            InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
 
-                url = awsS3InsertService.uploadFile(inputStream);
-            }
-            InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
-            url2 = awsS3InsertService.uploadImage(inputStream2);
+            url = awsS3InsertService.uploadFile(inputStream);
+        }
+        InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
+        url2 = awsS3InsertService.uploadImage(inputStream2);
             TalePage page = new TalePage(talePage.getPage(), talePage.getData(), url, url2);
             pages.add(page);
         }

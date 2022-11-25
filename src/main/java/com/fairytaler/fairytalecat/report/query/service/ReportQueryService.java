@@ -39,7 +39,7 @@ public class ReportQueryService {
             reportMetaData.setReporterCode(report.getReporterCode());
             reportMetaData.setTargetCode(report.getTargetCode());
             reportMetaData.setTargetTaleCode(report.getTargetTaleCode());
-            reportMetaData.setCreateDate(report.getCraeteDate());
+            reportMetaData.setCreateDate(report.getCreateDate());
             try{
                 /* 회원 아이디 가져오기 */
                 String reporterId = memberInfoRepository.findByMemberCode(report.getReporterCode()).getMemberId();
@@ -77,7 +77,7 @@ public class ReportQueryService {
             reportResponseDTO.setReporterCode(report.getReporterCode());
             reportResponseDTO.setTargetCode(report.getTargetCode());
             reportResponseDTO.setTargetTaleCode(report.getTargetTaleCode());
-            reportResponseDTO.setCreateDate(report.getCraeteDate());
+            reportResponseDTO.setCreateDate(report.getCreateDate());
             reportResponseDTO.setAttachments(report.getAttachment());
             reportResponseDTO.setContent(report.getContent());
             /* 회원 아이디 가져오기 */

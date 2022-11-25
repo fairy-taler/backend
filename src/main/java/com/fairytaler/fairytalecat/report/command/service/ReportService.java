@@ -31,11 +31,11 @@ public class ReportService {
         report.setTargetCode(insertReportDTO.getTargetCode());
         report.setTargetTaleCode(insertReportDTO.getTargetTaleCode());
         report.setContent(insertReportDTO.getContent());
-        report.setCraeteDate(new Date());
+        report.setCreateDate(new Date());
         report.setReporterCode(Long.parseLong(tokenProvider.getUserCode(accessToken)));
 
         /* 파일 s3에 업로드 후 url 저장*/
-        if(insertReportDTO.getAttachment() != null){
+        if(insertReportDTO.getAttachment()!= null){
             InputStream inputStream = insertReportDTO.getAttachment().getInputStream();
             String url = awsS3InsertService.uploadImage(inputStream);
             report.setAttachment(url);
@@ -43,5 +43,4 @@ public class ReportService {
         reportRepository.save(report);
         return report;
     }
-
 }
