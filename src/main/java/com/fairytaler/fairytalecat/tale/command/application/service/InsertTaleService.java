@@ -316,4 +316,17 @@ public class InsertTaleService {
         }
         return null;
     }
+    public Tale updateBlockTale(String id, String isBlock) {
+
+        Optional<Tale> optionalTale = taleRepository.findById(id);
+        try{
+            Tale tale = optionalTale.get();
+            tale.setBlock(isBlock);
+            taleRepository.save(tale);
+            return tale;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
 }

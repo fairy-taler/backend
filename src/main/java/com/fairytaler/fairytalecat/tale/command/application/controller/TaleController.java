@@ -67,4 +67,15 @@ public class TaleController {
     public ResponseEntity<ResponseDTO> updateTaleInfo(@RequestBody TaleInfoRequestDTO taleInfoRequestDTO) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 수정 성공", insertTaleService.updateTaleInfo(taleInfoRequestDTO)));
     }
+
+    /* 동화 차단 */
+    @PutMapping("/block")
+    public ResponseEntity<ResponseDTO> updateBlockTale(@RequestParam String id) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 차단 성공", insertTaleService.updateBlockTale(id, "Y")));
+    }
+    /* 동화 차단 해제*/
+    @PutMapping("/unblock")
+    public ResponseEntity<ResponseDTO> updateUnBlockTale(@RequestParam String id) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 차단 해제 성공", insertTaleService.updateBlockTale(id, "N")));
+    }
 }

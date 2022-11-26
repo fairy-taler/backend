@@ -20,6 +20,7 @@ public class TaleList {
     private String title;           // 제목
     private String createAt;        // 생성 날짜
     private byte[] thumbnail;       // 동화 표지
+    private String block;
 }
 
 

@@ -23,6 +23,11 @@ public class ReportQueryController {
     @GetMapping("/{reportCode}")
     public ResponseEntity<ResponseDTO> selectReportListByPaging(@PathVariable Long reportCode){
         System.out.println(reportCode);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "신고 전체 조회 성공", reportQueryService.getReport(reportCode)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "신고 상세 조회 성공", reportQueryService.getReport(reportCode)));
+    }
+    /* 동화 id로 신고 목록 검색 */
+    @GetMapping("/taleId")
+    public ResponseEntity<ResponseDTO> selectReportListByPaging(Pageable pageable,@RequestParam String id){
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "신고 전체 조회 성공", reportQueryService.getReportListWidthPagingAndTaleId(id, pageable)));
     }
 }

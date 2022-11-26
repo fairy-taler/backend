@@ -42,9 +42,12 @@ public class TaleQueryController {
     public ResponseEntity<ResponseDTO> selectTale(@RequestHeader String accessToken, Pageable pageable) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 전체 조회 성공", searchTaleService.getTaleListWithPaging(pageable)));
     }
-
     @GetMapping("/title")
     public ResponseEntity<ResponseDTO> selectTaleByTitle(@RequestHeader String accessToken, String title, Pageable pageable) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 제목으로 검색 성공", searchTaleService.searchTaleByTitle(title,pageable)));
+    }
+    @GetMapping("/block")
+    public ResponseEntity<ResponseDTO> selectTaleByTitle(Pageable pageable) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 전체 조회 성공", searchTaleService.getTaleListWidthPaging(pageable)));
     }
 }
