@@ -20,6 +20,7 @@ public class Tale {
     private String title;           // 제목
     private Date createAt;         // 생성 날짜
     private List<TalePage> pages;   // 페이지
+    private String block;          //차단 여부
 
     public Tale(){}
 

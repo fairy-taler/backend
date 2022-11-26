@@ -65,6 +65,48 @@ public class ReportQueryService {
 
         return pages;
     }
+    /* 동화 아이디로 신고 검색 */
+    public Object getReportListWidthPagingAndTaleId(String id, Pageable pageable){
+        Page<Report> reports = reportQueryRepository.findByTargetTaleCode(id, pageable);
+        List<ReporMetaDataDTO> reportMetaDataList = new ArrayList<>();
+        /* 원하는 데이터를 갖고 있는 DTO 리스트 만들기*/
+        for(Report report : reports.getContent()){
+            /* 엔티티에서 데이터 가져오와서 DTO 정보 저장*/
+            ReporMetaDataDTO reportMetaData = new ReporMetaDataDTO();
+
+            reportMetaData.setReportCode(report.getReportCode());
+            reportMetaData.setCategory(report.getCategory());
+            reportMetaData.setReporterCode(report.getReporterCode());
+            reportMetaData.setTargetCode(report.getTargetCode());
+            reportMetaData.setTargetTaleCode(report.getTargetTaleCode());
+            reportMetaData.setCreateDate(report.getCreateDate());
+            try{
+                /* 회원 아이디 가져오기 */
+                String reporterId = memberInfoRepository.findByMemberCode(report.getReporterCode()).getMemberId();
+                String targetId = memberInfoRepository.findByMemberCode(report.getTargetCode()).getMemberId();
+                reportMetaData.setReporterId(reporterId);
+                reportMetaData.setTargetId(targetId);
+                /* 동화 제목 조회 */
+                String targetTaleTitle = taleRepository.findById(report.getTargetTaleCode()).get().getTitle();
+                reportMetaData.setTargetTaleTitle(targetTaleTitle);
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+            reportMetaDataList.add(reportMetaData);
+        }
+        /* 페이지 네이션에 데이터 셋팅*/
+        Pagenation<ReporMetaDataDTO> pages = new Pagenation<ReporMetaDataDTO>();
+        pages.setTotalPages(reports.getTotalPages());
+        pages.setTotalElement(reports.getTotalElements());
+        pages.setSize(reports.getSize());
+        pages.setNumber(reports.getNumber());
+        pages.setContent(reportMetaDataList);
+
+        return pages;
+    }
+
+
     public Object getReport(Long reportCode){
         Optional<Report> oReport = reportQueryRepository.findById(reportCode);
         ReportResponseDTO reportResponseDTO= new ReportResponseDTO();
