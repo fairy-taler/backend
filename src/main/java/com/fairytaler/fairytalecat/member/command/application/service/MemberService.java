@@ -93,9 +93,12 @@ public class MemberService {
         }
         try {
             profile.setMemberCode(memberCode);
+            System.out.println("requestProfileDTO.getIntro() = " + requestProfileDTO.getIntro());
             profile.setIntro(requestProfileDTO.getIntro());
-            String url = awsS3InsertService.uploadFileByMultipartFile(requestProfileDTO.getProfileImg());
-            profile.setImgUrl(url);
+            if(requestProfileDTO.getProfileImg() != null ){
+                String url = awsS3InsertService.uploadFileByMultipartFile(requestProfileDTO.getProfileImg());
+                profile.setImgUrl(url);
+            }
             profileRepository.save(profile);
             System.out.println("profile = " + profile);
         }catch (Exception exception){
