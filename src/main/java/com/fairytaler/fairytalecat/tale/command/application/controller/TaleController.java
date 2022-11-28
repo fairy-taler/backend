@@ -13,9 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.util.List;
-
 @RestController
 @RequestMapping("/tale") // 데이터 리턴 서버
 public class TaleController {
@@ -60,12 +57,12 @@ public class TaleController {
 //    }
 
     @PostMapping("/info")
-    public ResponseEntity<ResponseDTO> insertTaleInfo(@RequestHeader String accessToken, @RequestBody TaleInfoRequestDTO taleInfoRequestDTO) throws ParseException {
+    public ResponseEntity<ResponseDTO> insertTaleInfo(@RequestHeader String accessToken, @RequestBody TaleInfoRequestDTO taleInfoRequestDTO) throws Exception {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 등록 성공", insertTaleService.insertTaleInfo(accessToken,taleInfoRequestDTO)));
     }
 
     @PutMapping("/info")
-    public ResponseEntity<ResponseDTO> updateTaleInfo(@RequestBody TaleInfoRequestDTO taleInfoRequestDTO) throws ParseException {
+    public ResponseEntity<ResponseDTO> updateTaleInfo(@RequestBody TaleInfoRequestDTO taleInfoRequestDTO) throws Exception {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "동화 세부정보 수정 성공", insertTaleService.updateTaleInfo(taleInfoRequestDTO)));
     }
 
