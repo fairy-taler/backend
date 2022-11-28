@@ -31,7 +31,7 @@ public class AuthService {
     }
 
     @Transactional
-    public MemberDTO join(MemberDTO memberDTO) {
+    public MemberDTO join(MemberDTO memberDTO) throws Exception {
 
         if(memberDTO.getMemberId() == "" || memberDTO.getMemberPwd() == "" || memberDTO.getMemberName() == "" || memberDTO.getEmail() == "" || memberDTO.getPhone() == ""){
             throw new FullInputMemberInfoException("필수 정보를 모두 입력해주세요");
@@ -52,7 +52,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDTO login(MemberDTO memberDTO)  {
+    public TokenDTO login(MemberDTO memberDTO) throws Exception  {
         MemberDTO member = memberMapper.findByMemberId(memberDTO.getMemberId())
                 .orElseThrow(() -> new LoginFailedException("잘못된 아이디 또는 비밀번호 입니다."));
 
@@ -71,7 +71,7 @@ public class AuthService {
         return token;
     }
 
-    public Object delete(String accessToken) {
+    public Object delete(String accessToken) throws Exception {
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
         Optional<Member> optionalMember = Optional.of(memberInfoRepository.findByMemberCode(memberCode));
 
