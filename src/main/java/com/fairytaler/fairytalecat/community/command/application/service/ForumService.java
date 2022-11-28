@@ -121,4 +121,20 @@ public class ForumService {
 
         return null;
     }
+
+    public Forum addViewNumber(Long forumCode){
+        Optional<Forum> oForum = forumDAO.findById(forumCode);
+
+        /* 데이터 삽입 */
+        try{
+            Forum forum = oForum.get();
+            forum.setViews(forum.getViews()+1);
+
+            forumDAO.save(forum);
+            return forum;
+        }
+        catch (Exception exception){
+            return null;
+        }
+    }
 }

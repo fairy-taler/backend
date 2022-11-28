@@ -24,6 +24,7 @@ public class ForumResponseDTO{
     private String memberId;
     private String profileUrl;
     private boolean isMyForum;
+    private int views;
 
     private List<CommentResponseDTO> comments;
 

@@ -41,6 +41,22 @@ public class AwsS3InsertService{
 
         return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
+    public String uploadFileWithMetaData( InputStream inputStream, byte[] bytes) {
+
+//        validateFileExists(multipartFile); 파일이 비어있는지 확인
+        String fileName = UUID.randomUUID().toString().replace("-", "");
+
+//        String fileName = CommonUtils.buildFileName(category, multipartFile.getOriginalFilename());
+        /* 파일 메타 데이타 생성 */
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("audio/mpeg");
+        objectMetadata.setContentLength(bytes.length);
+
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+        return amazonS3Client.getUrl(bucketName, fileName).toString();
+    }
 
     public String uploadImage( InputStream inputStream) {
 
@@ -54,8 +70,6 @@ public class AwsS3InsertService{
 
         amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-
-
         return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
 
@@ -76,9 +90,6 @@ public class AwsS3InsertService{
 //            throw new FileUploadFailedException();
             System.out.println("에러1");
         }
-
         return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.fairytaler.fairytalecat.community.query.application.service;
 
 import com.fairytaler.fairytalecat.common.paging.Pagenation;
+import com.fairytaler.fairytalecat.community.command.application.service.ForumService;
 import com.fairytaler.fairytalecat.community.domain.model.Comment;
 import com.fairytaler.fairytalecat.community.domain.model.Forum;
 import com.fairytaler.fairytalecat.community.domain.model.Notice;
@@ -29,13 +30,15 @@ public class ForumQueryService {
 
     static private ProfileRepository profileRepository;
     static private TokenProvider tokenProvider;
+    static private ForumService forumService;
     public ForumQueryService(ForumQueryDAO forumQueryDao, CommentQueryDAO commentQueryDAO, MemberInfoRepository memberInfoRepository,
-                             TokenProvider tokenProvider, ProfileRepository profileRepository){
+                             TokenProvider tokenProvider, ProfileRepository profileRepository,  ForumService forumService){
         this.forumQueryDao = forumQueryDao;
         this.commentQueryDAO = commentQueryDAO;
         this.memberInfoRepository = memberInfoRepository;
         this.tokenProvider = tokenProvider;
         this.profileRepository = profileRepository;
+        this.forumService = forumService;
     }
     public ForumResponseDTO getForum(String accessToken, Long forumCode){
         /* 게시판 조회 */
@@ -53,6 +56,7 @@ public class ForumQueryService {
         forumResponseDTO.setContent(forum.getContent());
         forumResponseDTO.setCreateDate(forum.getCreateDate());
         forumResponseDTO.setMemberCode(forum.getMemberCode());
+        forumResponseDTO.setViews(forum.getViews());
         /* 닉네임 조회 */
         Member writer = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode()));
         String memberCode = tokenProvider.getUserCode(accessToken);
@@ -67,7 +71,7 @@ public class ForumQueryService {
         /* 회원 아이디 조회 */
         String memberId = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getMemberId();
         forumResponseDTO.setMemberId(memberId);
-
+        forumService.addViewNumber(forumCode);
         return forumResponseDTO;
 }
     public List<CommentResponseDTO> getCommentInForum(String accessToken, Long forumCode){
@@ -136,6 +140,7 @@ public class ForumQueryService {
             forumResponseDTO.setCategory(forum.getCategory());
             forumResponseDTO.setForumCode(forum.getForumCode());
             forumResponseDTO.setMemberCode(forum.getMemberCode());
+            forumResponseDTO.setViews(forum.getViews());
 
             /* 닉네임 가져오기 */
             String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
@@ -176,6 +181,7 @@ public class ForumQueryService {
             forumResponseDTO.setCreateDate(forum.getCreateDate());
             forumResponseDTO.setCategory(forum.getCategory());
             forumResponseDTO.setForumCode(forum.getForumCode());
+            forumResponseDTO.setViews(forum.getViews());
 
             /* 닉네임 가져오기 */
             String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
@@ -213,6 +219,7 @@ public class ForumQueryService {
             forumResponseDTO.setCreateDate(forum.getCreateDate());
             forumResponseDTO.setCategory(forum.getCategory());
             forumResponseDTO.setForumCode(forum.getForumCode());
+            forumResponseDTO.setViews(forum.getViews());
 
             /* 닉네임 가져오기 */
             String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();
@@ -252,6 +259,7 @@ public class ForumQueryService {
             forumResponseDTO.setCategory(forum.getCategory());
             forumResponseDTO.setForumCode(forum.getForumCode());
             forumResponseDTO.setMemberCode(forum.getMemberCode());
+            forumResponseDTO.setViews(forum.getViews());
 
             /* 닉네임 가져오기 */
             String nickname = memberInfoRepository.findByMemberCode(Long.parseLong(forum.getMemberCode())).getNickname();

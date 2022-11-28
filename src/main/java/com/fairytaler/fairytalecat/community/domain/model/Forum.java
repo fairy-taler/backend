@@ -34,6 +34,7 @@ public class Forum{
     private String content;
     private String memberCode;
     private Date createDate;
+    private int views;
 
     public Forum(){}
 

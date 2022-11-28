@@ -67,6 +67,7 @@ public class InsertTaleService {
             String url2 = "";
             /* ttsText에 값이 들어온다면 */
             if(!(talePage.getTtsText() == "")){
+                System.out.println("티티에스");
                 System.out.println("[tts] : " + talePage.getTtsText());
                 byte[] bytes = ttsService.ResponseTTS(talePage.getTtsText());
 
@@ -76,10 +77,13 @@ public class InsertTaleService {
             }
             /* 음성 파일이 들어온다면 */
             else if(!(talePage.getVoice().length == 0)){
-                System.out.println("[voice] : " + talePage.getVoice().length);
-            InputStream inputStream = new ByteArrayInputStream(talePage.getVoice());
+                System.out.println("보이스");
+//                System.out.println("[voice] : " + talePage.getVoice().length);
+                byte[] bytes = talePage.getVoice();
+                byte[] base64 = Base64.getEncoder().encode(bytes);
+                InputStream inputStream = new ByteArrayInputStream(base64);
 
-            url = awsS3InsertService.uploadFile(inputStream);
+                url = awsS3InsertService.uploadFileWithMetaData(inputStream,bytes);
         }
         InputStream inputStream2 = new ByteArrayInputStream(talePage.getRawImg());
         url2 = awsS3InsertService.uploadImage(inputStream2);
@@ -98,8 +102,7 @@ public class InsertTaleService {
         taleRepository.save(tale);
 
         System.out.println("tale = " + tale);
-
-        return "성공";
+        return tale.getPages();
     }
 //    public Object insertTaleVoice(String accessToken, TaleVoiceRequestDTO taleRequestDTO) {
 //
