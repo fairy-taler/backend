@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.avatar.command.application.service;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
 import com.fairytaler.fairytalecat.avatar.query.dto.AvatarRequestDTO;
+import com.fairytaler.fairytalecat.exception.AvatarException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.command.application.dto.TokenDTO;
@@ -27,11 +28,15 @@ public class InsertAvatarService {
 
         String memberCode = tokenProvider.getUserCode(accessToken);
         Avatar avatar = new Avatar();
-        avatar.setMemberCode(Long.parseLong(memberCode));
-        avatar.setAnimal(avatarRequestDTO.getAnimal());
-        avatar.setMaterial(avatarRequestDTO.getMaterial());
-        avatar.setObjectName(avatarRequestDTO.getObjectName());
-        avatarRepository.save(avatar);
+        try {
+            avatar.setMemberCode(Long.parseLong(memberCode));
+            avatar.setAnimal(avatarRequestDTO.getAnimal());
+            avatar.setMaterial(avatarRequestDTO.getMaterial());
+            avatar.setObjectName(avatarRequestDTO.getObjectName());
+            avatarRepository.save(avatar);
+        }catch (Exception exception){
+            throw new AvatarException("아바타 생성에 실패하였습니다. ");
+        }
 
         return avatar.getMemberCode();
     }

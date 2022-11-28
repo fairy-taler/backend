@@ -2,10 +2,14 @@ package com.fairytaler.fairytalecat.member.query.apllication.service;
 
 import com.fairytaler.fairytalecat.avatar.command.application.service.InsertAvatarService;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
+import com.fairytaler.fairytalecat.exception.AuthorizationException;
+import com.fairytaler.fairytalecat.exception.LoginFailedException;
+import com.fairytaler.fairytalecat.exception.UserNotFoundException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.command.application.dao.MemberMapper;
 import com.fairytaler.fairytalecat.member.command.application.dto.MemberDTO;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
+import com.fairytaler.fairytalecat.member.domain.model.MemberPwd;
 import com.fairytaler.fairytalecat.member.domain.model.Profile;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberRepository;
@@ -15,11 +19,14 @@ import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseProfileD
 import com.fairytaler.fairytalecat.tale.domain.repository.TaleRepository;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.RequestSearchIdDTO;
 import com.fairytaler.fairytalecat.member.query.apllication.dto.ResponseMemberDTO;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberQueryService {
@@ -87,17 +94,20 @@ public class MemberQueryService {
 
     public String searchId(RequestSearchIdDTO requestSearchIdDTO) {
         Member member = memberInfoRepository.findByMemberNameAndEmail(requestSearchIdDTO.getMemberName(), requestSearchIdDTO.getEmail());
+        if(member == null ){
+            throw new LoginFailedException("일치하는 회원 정보가 없습니다.");
+        }
         return member.getMemberId();
     }
 
     public List<Member> findAllMember(String accessToken) {
         Authentication auth = tokenProvider.getAuthentication(accessToken);
         if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
-            List<Member> members = memberInfoRepository.findAll();
+            List<Member> members = memberInfoRepository.findAll(Sort.by(Sort.Direction.ASC, "memberCode"));
             return members;
+        }else {
+            throw new AuthorizationException("접근 권한이 없습니다.");
         }
-        return null;
-
     }
 
 
@@ -123,5 +133,26 @@ public class MemberQueryService {
         responseProfileDTO.setTaleCount(taleRepository.countTaleByMemberCode(memberCode.toString()));
 
         return responseProfileDTO;
+    }
+
+    public Object searchMember(String accessToken, String keyword) {
+        Authentication auth = tokenProvider.getAuthentication(accessToken);
+        if(auth.getAuthorities().toString().equals("[[ADMIN]]")){
+            try {
+                Specification<Member> spec = (root, query, criteriaBuilder) -> null;
+                spec = spec.or(MemberSpecification.equalMemberId(keyword));
+                spec = spec.or(MemberSpecification.equalMemberName(keyword));
+                spec = spec.or(MemberSpecification.equalNickname(keyword));
+                spec = spec.or(MemberSpecification.equalEmail(keyword));
+                spec = spec.or(MemberSpecification.equalPhone(keyword));
+
+                List<Member> members = memberInfoRepository.findAll(spec);
+                return members;
+
+            }catch (Exception exception) {
+                throw new LoginFailedException("회원 검색에 실패하였습니다");
+            }
+        }
+        return null;
     }
 }

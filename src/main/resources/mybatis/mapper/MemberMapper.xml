@@ -16,6 +16,7 @@
              , PHONE
              , NICKNAME
              , MEMBER_ROLE
+             , BLOCK_STATUS
           FROM TB_MEMBER
          WHERE MEMBER_ID = #{memberId}
     </select>

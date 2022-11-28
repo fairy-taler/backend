@@ -3,6 +3,7 @@ package com.fairytaler.fairytalecat.avatar.command.application.service;
 import com.fairytaler.fairytalecat.avatar.domain.model.Avatar;
 import com.fairytaler.fairytalecat.avatar.domain.repository.AvatarRepository;
 import com.fairytaler.fairytalecat.avatar.query.dto.AvatarRequestDTO;
+import com.fairytaler.fairytalecat.exception.AvatarException;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,23 @@ public class UpdateAvatarService {
 
         Long memberCode = Long.parseLong(tokenProvider.getUserCode(accessToken));
         Avatar originAvatar = avatarRepository.findByMemberCode(memberCode);
-        Avatar avatar;
-        if(originAvatar == null){
-            avatar = new Avatar();
-            avatar.setMemberCode(memberCode);
-        }
-        avatar = originAvatar;
-        avatar.setAnimal(avatarRequestDTO.getAnimal());
-        avatar.setMaterial(avatarRequestDTO.getMaterial());
-        avatar.setObjectName(avatarRequestDTO.getObjectName());
-        avatarRepository.save(avatar);
+        Avatar avatar = originAvatar;
+        try {
+            if (originAvatar == null) {
+                avatar = new Avatar();
+                avatar.setMemberCode(memberCode);
+            }
+            avatar.setAnimal(avatarRequestDTO.getAnimal());
+            avatar.setMaterial(avatarRequestDTO.getMaterial());
+            avatar.setObjectName(avatarRequestDTO.getObjectName());
+            avatarRepository.save(avatar);
 
-        return avatar.getMemberCode();
+            return avatar.getMemberCode();
+        }catch (NullPointerException exception){
+            exception.printStackTrace();
+            throw new AvatarException("아바타 업데이트에 실패 하였습니다");
+        }
+
     }
 
 

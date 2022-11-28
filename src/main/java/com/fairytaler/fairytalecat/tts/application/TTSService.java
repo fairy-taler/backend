@@ -1,5 +1,6 @@
 package com.fairytaler.fairytalecat.tts.application;
 // 네이버 음성합성 Open API 예제
+import com.fairytaler.fairytalecat.exception.TaleException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.mock.web.MockMultipartFile;
@@ -34,7 +35,7 @@ public class TTSService {
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
             con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
             // post request
-            String postParams = "speaker=nara&volume=0&speed=0&pitch=0&format=mp3&text=" + text;
+            String postParams = "speaker=nara&volume=0&speed=0&pitch=0&format=wav&text=" + text ;
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(postParams);
@@ -71,7 +72,7 @@ public class TTSService {
                 System.out.println(response.toString());
             }
         } catch (Exception e) {
-            System.out.println(e);
+            throw new TaleException("음성 변환 오류가 발생하였습니다.");
         }
        return returnByte;
     }

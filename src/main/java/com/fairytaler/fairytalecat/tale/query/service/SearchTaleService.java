@@ -1,6 +1,8 @@
 package com.fairytaler.fairytalecat.tale.query.service;
 
 import com.fairytaler.fairytalecat.common.paging.Pagenation;
+import com.fairytaler.fairytalecat.exception.TaleException;
+import com.fairytaler.fairytalecat.community.domain.model.Notice;
 import com.fairytaler.fairytalecat.jwt.TokenProvider;
 import com.fairytaler.fairytalecat.member.domain.model.Member;
 import com.fairytaler.fairytalecat.member.domain.repository.MemberInfoRepository;
@@ -50,14 +52,14 @@ public class SearchTaleService {
 
         try {
             if (taleRepository.findById(id) == null) {
-                return "동화가 존재하지 않습니다!";
+                throw new TaleException("동화가 존재하지 않습니다!");
             } else {
                 System.out.println("taleRepository.findByMemberCode(id); = " + taleRepository.findById(id));
                 return taleRepository.findById(id);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "ERROR";
+            throw new TaleException("동화 조회에 실패하였습니다. ");
         }
 
     }
@@ -68,7 +70,7 @@ public class SearchTaleService {
         List<TaleResponseDTO> taleResponseDTOs = new LinkedList<>();
 
         if (taleListRepository.findByMemberCode(memberCode) == null) {
-            return "동화가 존재하지 않습니다!";
+            throw new TaleException("동화가 존재하지 않습니다!");
         } else {
             System.out.println("taleRepository.findByMemberCode(id); = " + taleListRepository.findByMemberCode(memberCode));
             List<TaleList> taleLists = taleListRepository.findByMemberCode(memberCode);
@@ -92,7 +94,6 @@ public class SearchTaleService {
                 }
                 taleResponseDTOs.add(taleResponseDTO);
             }
-
             return taleResponseDTOs;
         }
     }
@@ -127,7 +128,7 @@ public class SearchTaleService {
         String memberCode = member.getMemberCode().toString();
 
         if (taleListRepository.findByMemberCode(memberCode) == null) {
-            return "동화가 존재하지 않습니다!";
+            throw new TaleException("동화가 존재하지 않습니다!");
         } else {
             System.out.println("taleRepository.findByMemberCode(id); = " + taleListRepository.findByMemberCode(memberCode));
             List<TaleList> taleLists = taleListRepository.findByMemberCode(memberCode);
@@ -145,10 +146,10 @@ public class SearchTaleService {
                 }catch (Exception e){
                     TaleInfo taleInfo = new TaleInfo(taleList.getId(),null,null,null,null,null,null,null,null,null,null, "N");
                     taleResponseDTO = new TaleResponseDTO(taleList, taleInfo);
+
                 }
                 taleResponseDTOs.add(taleResponseDTO);
             }
-
             return taleResponseDTOs;
         }
     }
