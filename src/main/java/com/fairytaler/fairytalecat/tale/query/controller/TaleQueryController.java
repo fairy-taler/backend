@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 
 @RestController
 @RequestMapping("/tale") // 데이터 리턴 서버
@@ -27,17 +26,17 @@ public class TaleQueryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) throws ParseException {
+    public ResponseEntity<ResponseDTO> searchTale(@PathVariable String id) throws Exception {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByTaleCode(id)));
     }
 
     @GetMapping("/mylist")
-    public ResponseEntity<ResponseDTO> searchMyTale(@RequestHeader String accessToken) throws ParseException  {
+    public ResponseEntity<ResponseDTO> searchMyTale(@RequestHeader String accessToken) throws Exception  {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberCode(accessToken)));
     }
 
     @GetMapping("/list/{memberId}")
-    public ResponseEntity<ResponseDTO> searchTaleByMemberId(@PathVariable String memberId) throws ParseException {
+    public ResponseEntity<ResponseDTO> searchTaleByMemberId(@PathVariable String memberId) throws Exception {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "동화 조회 성공", searchTaleService.searchTaleByMemberId(memberId)));
     }
     @GetMapping("")
